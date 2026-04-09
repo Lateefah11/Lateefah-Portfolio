@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { DottedSurface } from "@/components/ui/dotted-surface"
+import { ParticleSphere } from "@/components/ui/particle-sphere"
 import HorizontalScrollCarousel, { type StepCard } from "@/components/ui/horizontal-scroll-carousel"
 import { AnimatedFooter } from "@/components/ui/animated-footer"
 
@@ -187,26 +187,48 @@ function Navbar() {
 
 /* ─── Hero ───────────────────────────────────────────── */
 function Hero() {
-  return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center text-center overflow-hidden px-6 pt-24 pb-0 bg-[#1a1a1a]">
-      {/* DottedSurface animated background */}
-      <DottedSurface className="absolute inset-0 w-full h-full" />
+  const outerRef = useRef<HTMLDivElement>(null)
 
-      {/* Content */}
-      <div className="relative z-10 max-w-2xl mx-auto">
-        <span className="inline-block text-[11px] font-medium tracking-[0.12em] uppercase text-white/50 mb-5">
-          Product Designer
-        </span>
-        <h1
-          className="text-[clamp(72px,12vw,140px)] leading-[1.0] tracking-[-3px] text-white font-black"
-          style={{ fontFamily: "var(--font-anton)" }}
-        >
-          Lateefah
-          <br />
-          Abdulrahman
-        </h1>
-      </div>
-    </section>
+  return (
+    <div ref={outerRef} style={{ height: "210vh", position: "relative" }}>
+      <section className="sticky top-0 h-screen flex flex-col items-center justify-center text-center overflow-hidden px-6 bg-[#1a1a1a]">
+
+        {/* Particle sphere background */}
+        <ParticleSphere
+          className="absolute inset-0 w-full h-full"
+          outerRef={outerRef}
+        />
+
+        {/* Hero text — always visible, animation plays behind */}
+        <div className="relative z-10 max-w-2xl mx-auto">
+          <span className="inline-block text-[11px] font-medium tracking-[0.12em] uppercase text-white/50 mb-5">
+            Product Designer
+          </span>
+          <h1
+            className="text-[clamp(72px,12vw,140px)] leading-[1.0] tracking-[-3px] text-white font-black"
+            style={{ fontFamily: "var(--font-anton)" }}
+          >
+            Lateefah
+            <br />
+            Abdulrahman
+          </h1>
+        </div>
+
+        {/* Scroll cue */}
+        <div className="absolute bottom-9 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
+          <span
+            className="text-white/35 text-[10px] tracking-[0.18em] uppercase"
+            style={{ fontFamily: "var(--font-geist-sans)" }}
+          >
+            Scroll
+          </span>
+          <svg width="16" height="10" viewBox="0 0 16 10" fill="none" className="animate-bounce">
+            <path d="M1 1L8 8L15 1" stroke="rgba(255,255,255,0.35)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+
+      </section>
+    </div>
   )
 }
 

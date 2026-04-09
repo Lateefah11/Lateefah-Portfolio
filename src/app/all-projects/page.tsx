@@ -42,22 +42,6 @@ const allWorks = [
     href: "https://www.clubarant.com/",
     year: "2024",
   },
-  {
-    id: 5,
-    tag: "Mobile App · Social",
-    title: "IYXN Community",
-    desc: "A community-focused social app connecting people around shared cultural interests and values.",
-    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80",
-    year: "2024",
-  },
-  {
-    id: 6,
-    tag: "Mobile + Web · Travel",
-    title: "Explore Nigeria",
-    desc: "A location-based travel companion helping users discover hidden gems across Nigerian cities.",
-    image: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&auto=format&fit=crop&q=80",
-    year: "2023",
-  },
 ]
 
 /* ─── Project Card ───────────────────────────────────── */

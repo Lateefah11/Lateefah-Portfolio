@@ -1,0 +1,10 @@
+{
+  "version": "0.0.1",
+  "configurations": [{
+    "name": "Portfolio Dev Server",
+    "runtimeExecutable": "/bin/bash",
+    "runtimeArgs": ["/Users/mac/Claude codes/portfolio/start-dev.sh"],
+    "port": 3000,
+    "autoPort": true
+  }]
+}
