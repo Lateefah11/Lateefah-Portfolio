@@ -803,7 +803,7 @@ function CTASection() {
         conversations. Let&apos;s build something together that creates real impact.
       </p>
       <a
-        href="mailto:hello@lateefah.com"
+        href="mailto:lateefahabdulrahman111@gmail.com"
         className="inline-flex items-center gap-2 bg-[#e8722a] text-white text-[13.5px] font-semibold px-8 py-3.5 rounded-lg hover:bg-[#d4641e] transition-colors no-underline"
       >
         Connect with me
