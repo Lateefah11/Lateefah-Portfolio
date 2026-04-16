@@ -133,9 +133,9 @@ export const AnimatedFooter = ({
         <div
           className="absolute left-1/2 -translate-x-1/2 bottom-0 pointer-events-none select-none text-center leading-none overflow-hidden"
           style={{
-            fontSize: "350px",
+            fontSize: "clamp(100px, 28vw, 350px)",
             width: "100%",
-            height: "260px",
+            height: "clamp(80px, 20vw, 260px)",
             background: "linear-gradient(to bottom, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 60%, transparent 100%)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",

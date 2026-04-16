@@ -205,7 +205,7 @@ function Hero() {
             Product Designer
           </span>
           <h1
-            className="text-[clamp(72px,12vw,140px)] leading-[1.0] tracking-[-3px] text-white font-black"
+            className="text-[clamp(44px,13vw,140px)] leading-[1.0] tracking-[-1px] md:tracking-[-3px] text-white font-black"
             style={{ fontFamily: "var(--font-anton)" }}
           >
             Lateefah
@@ -389,26 +389,22 @@ function ProjectsSection() {
 
   return (
     <section id="featured-works" className="relative bg-[#111111] p-2">
-      {/*
-        2-column grid with 8px gap (gap-2).
-        The section has p-2 so there's also 8px around the outside edges.
-        "See all works" pill floats absolutely at the center seam.
-      */}
-      <div className="relative grid grid-cols-2 gap-2" style={{ gridTemplateRows: "600px 600px" }}>
-
-        {shown.map((work) =>
-          work.isMockup ? (
-            <MockupCard key={work.id} work={work} />
-          ) : (
-            <WorkCard key={work.id} work={work} />
-          )
-        )}
+      <div className="relative grid grid-cols-1 md:grid-cols-2 gap-2">
+        {shown.map((work) => (
+          <div key={work.id} className="h-[280px] md:h-[600px]">
+            {work.isMockup ? (
+              <MockupCard work={work} />
+            ) : (
+              <WorkCard work={work} />
+            )}
+          </div>
+        ))}
 
         {/* "See all works" pill — dead center at the row seam */}
         <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
           <a
             href="/all-projects"
-            className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-white text-black text-[14px] font-semibold no-underline shadow-xl hover:bg-[#111] hover:text-white transition-all duration-300 whitespace-nowrap"
+            className="inline-flex items-center gap-2 px-5 md:px-7 py-2.5 md:py-3.5 rounded-full bg-white text-black text-[12px] md:text-[14px] font-semibold no-underline shadow-xl hover:bg-[#111] hover:text-white transition-all duration-300 whitespace-nowrap"
           >
             See all works
           </a>
@@ -457,7 +453,7 @@ function AboutSection() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",
-        padding: "120px 48px",
+        padding: "clamp(60px, 10vh, 120px) clamp(20px, 5vw, 48px)",
       }}
     >
       <p
@@ -567,60 +563,50 @@ function ApproachSection() {
 /* ─── Stats ──────────────────────────────────────────── */
 function StatsSection() {
   const stats = [
-    { number: "20", suffix: "+", label: "Successful projects completed", first: true },
-    { number: "4",  suffix: "+", label: "Years of experience in the creative industry", first: false },
-    { number: "99", suffix: "%", label: "Customer satisfaction rate", first: false },
-    { number: "10", suffix: "M", label: "In Client revenue growth", first: false },
+    { number: "20", suffix: "+", label: "Successful projects completed" },
+    { number: "4",  suffix: "+", label: "Years of experience in the creative industry" },
+    { number: "99", suffix: "%", label: "Customer satisfaction rate" },
+    { number: "10", suffix: "M", label: "In Client revenue growth" },
   ]
 
   return (
-    <section className="w-full overflow-hidden" style={{ background: "#1a1a1a" }}>
-      <div className="flex items-center w-full" style={{ padding: "0 60px" }}>
-        {stats.map((stat) => (
+    <section className="w-full bg-[#1a1a1a]">
+      <div className="grid grid-cols-2 md:grid-cols-4 px-6 md:px-[60px]">
+        {stats.map((stat, i) => (
           <div
             key={stat.number + stat.suffix}
-            className="relative overflow-hidden shrink-0 flex-1"
-            style={{
-              height: "286px",
-              borderLeft: stat.first ? "none" : "1px solid #303030",
-            }}
+            className={[
+              "flex flex-col justify-center gap-3 md:gap-10 py-10 md:py-0 px-4 md:pl-7 md:pr-0",
+              i % 2 === 1 ? "border-l border-[#303030]" : "",
+              i >= 2 ? "border-t border-[#303030] md:border-t-0" : "",
+              i > 0 ? "md:border-l md:border-[#303030]" : "",
+            ].filter(Boolean).join(" ")}
+            style={{ minHeight: "clamp(160px, 20vw, 286px)" }}
           >
-            <div
-              className="absolute flex flex-col items-start"
+            <p
               style={{
-                left: stat.first ? "30px" : "29px",
-                top: "96px",
-                width: "244px",
-                gap: "40px",
+                fontFamily: "var(--font-anton)",
+                fontSize: "clamp(36px, 5vw, 64px)",
+                lineHeight: "1",
+                color: "#f9f9f9",
+                margin: 0,
               }}
             >
-              {/* Number + suffix */}
-              <p
-                style={{
-                  fontFamily: "var(--font-anton)",
-                  fontSize: "64px",
-                  lineHeight: "48px",
-                  color: "#f9f9f9",
-                  margin: 0,
-                }}
-              >
-                <span>{stat.number}</span>
-                <span style={{ color: "#e16d00" }}>{stat.suffix}</span>
-              </p>
-              {/* Label */}
-              <p
-                style={{
-                  fontFamily: "var(--font-geist-sans)",
-                  fontSize: "20px",
-                  lineHeight: "25px",
-                  color: "#b3b3b3",
-                  fontWeight: 400,
-                  margin: 0,
-                }}
-              >
-                {stat.label}
-              </p>
-            </div>
+              <span>{stat.number}</span>
+              <span style={{ color: "#e16d00" }}>{stat.suffix}</span>
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-geist-sans)",
+                fontSize: "clamp(12px, 1.4vw, 20px)",
+                lineHeight: "1.4",
+                color: "#b3b3b3",
+                fontWeight: 400,
+                margin: 0,
+              }}
+            >
+              {stat.label}
+            </p>
           </div>
         ))}
       </div>
@@ -713,6 +699,31 @@ function TechCard({ tool }: { tool: (typeof techTools)[0] }) {
   )
 }
 
+/* Single tech card — mobile version, fills grid cell */
+function MobileTechCard({ tool }: { tool: (typeof techTools)[0] }) {
+  return (
+    <div
+      className="relative overflow-hidden flex flex-col items-center justify-center"
+      style={{ aspectRatio: "1 / 1", border: "1px solid #dedede" }}
+    >
+      {/* Number badge */}
+      <div className="absolute top-0 left-0 bg-[#dedede] px-3 py-1">
+        <p style={{ fontFamily: "var(--font-geist-sans)", fontSize: "12px", color: "#636363", margin: 0 }}>
+          {tool.num}
+        </p>
+      </div>
+      {/* Icon */}
+      <img src={tool.icon} alt={tool.name} className="w-10 h-10 object-contain" />
+      {/* Name */}
+      <div className="absolute bottom-0 right-0 p-2">
+        <p style={{ fontFamily: "var(--font-geist-sans)", fontSize: "12px", color: "#424242", margin: 0, whiteSpace: "nowrap" }}>
+          {tool.name}
+        </p>
+      </div>
+    </div>
+  )
+}
+
 function TechSection() {
   const { ref, visible } = useReveal()
   const row1 = techTools.slice(0, 5)
@@ -728,36 +739,38 @@ function TechSection() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         minHeight: "100vh",
-        padding: "80px 40px",
+        padding: "clamp(60px, 8vh, 80px) clamp(16px, 4vw, 40px)",
       }}
     >
       {/* Section title */}
       <p
         style={{
           fontFamily: "var(--font-anton)",
-          fontSize: "64px",
-          lineHeight: "48px",
+          fontSize: "clamp(36px, 8vw, 64px)",
+          lineHeight: "1.1",
           color: "#242424",
           fontWeight: 400,
-          fontStyle: "normal",
           whiteSpace: "nowrap",
-          marginBottom: "90px",
+          marginBottom: "clamp(40px, 6vh, 90px)",
         }}
       >
         Technologies
       </p>
 
-      <div
-        className="flex flex-col"
-        style={{ gap: "20px" }}
-      >
-        {/* Row 1 — 5 cards */}
+      {/* Mobile: 2-col grid */}
+      <div className="grid grid-cols-2 lg:hidden w-full max-w-[480px]">
+        {techTools.map((tool) => (
+          <MobileTechCard key={tool.name} tool={tool} />
+        ))}
+      </div>
+
+      {/* Desktop: original 2-row layout */}
+      <div className="hidden lg:flex flex-col" style={{ gap: "20px" }}>
         <div className="flex items-center">
           {row1.map((tool) => (
             <TechCard key={tool.name} tool={tool} />
           ))}
         </div>
-        {/* Row 2 — 3 cards, centered */}
         <div className="flex items-center justify-center">
           {row2.map((tool) => (
             <TechCard key={tool.name} tool={tool} />
@@ -775,7 +788,7 @@ function CTASection() {
   return (
     <section
       ref={ref as React.RefObject<HTMLElement>}
-      className={`bg-[#111] py-24 px-10 text-center transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+      className={`bg-[#111] py-16 md:py-24 px-6 md:px-10 text-center transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
     >
       <h2
         className="text-[clamp(36px,6vw,64px)] font-extrabold tracking-[-2px] leading-[1.1] text-white max-w-[600px] mx-auto mb-5"
@@ -864,6 +877,7 @@ export default function Home() {
       <ApproachSection />
       <StatsSection />
       <TechSection />
+      <CTASection />
       <Footer />
     </main>
   )

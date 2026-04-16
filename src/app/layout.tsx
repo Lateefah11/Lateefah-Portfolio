@@ -34,7 +34,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${bricolage.variable} ${inter.variable} ${anton.variable}`} suppressHydrationWarning>
-      <body className="antialiased min-h-screen bg-[#1a1a1a] text-white">
+      <body className="antialiased min-h-screen bg-[#1a1a1a] text-white overflow-x-hidden">
         <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
           {children}
         </ThemeProvider>
