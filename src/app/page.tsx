@@ -883,6 +883,47 @@ function Footer() {
   )
 }
 
+/* ─── Floating Resume Button ─────────────────────────── */
+function ResumeButton() {
+  return (
+    <a
+      href="https://docs.google.com/document/d/1Ou4iep9L-jh0QKcEXkNbW6BL90sfhX7DJf9YCj8RmYQ/edit?usp=sharing"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 no-underline group"
+      style={{
+        background: "#e16d00",
+        color: "#fff",
+        borderRadius: "100px",
+        padding: "12px 20px",
+        boxShadow: "0 4px 24px rgba(225,109,0,0.35)",
+        fontFamily: "var(--font-geist-sans)",
+        fontSize: "14px",
+        fontWeight: 600,
+        transition: "transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease",
+      }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"
+        ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 32px rgba(225,109,0,0.5)"
+        ;(e.currentTarget as HTMLAnchorElement).style.background = "#c95f00"
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"
+        ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 24px rgba(225,109,0,0.35)"
+        ;(e.currentTarget as HTMLAnchorElement).style.background = "#e16d00"
+      }}
+    >
+      {/* Download icon */}
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" y1="15" x2="12" y2="3" />
+      </svg>
+      Resume
+    </a>
+  )
+}
+
 /* ─── Page ───────────────────────────────────────────── */
 export default function Home() {
   return (
@@ -896,6 +937,7 @@ export default function Home() {
       <TechSection />
       <CTASection />
       <Footer />
+      <ResumeButton />
     </main>
   )
 }
