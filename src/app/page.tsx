@@ -468,7 +468,7 @@ function ProjectsSection() {
 /* ─── About Section ──────────────────────────────────── */
 const skills = [
   "Product Design", "UX Design", "Figma", "Framer",
-  "Photoshop", "Spline", "User Research", "Design Systems",
+  "Photoshop", "Spline", "User Research", "Design Systems", "Claude",
 ]
 
 function AboutSection() {
