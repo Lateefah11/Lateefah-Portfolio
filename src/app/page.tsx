@@ -232,6 +232,57 @@ function Hero() {
   )
 }
 
+/* ─── Scrolling Skills Marquee ───────────────────────── */
+const row1 = [
+  { label: "Product Design",    icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 6h12M6 10h12M6 14h8" /> },
+  { label: "UX Design",         icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 16v-3z" /> },
+  { label: "Mobile Apps",       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" /> },
+  { label: "Web Apps",          icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /> },
+  { label: "Design Systems",    icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /> },
+  { label: "User Research",     icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" /> },
+  { label: "Wireframing",       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5h16M4 9h10M4 13h6M4 17h4" /> },
+]
+
+const row2 = [
+  { label: "Figma",             icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 5.5A3.5 3.5 0 018.5 2H12v7H8.5A3.5 3.5 0 015 5.5zM12 2h3.5a3.5 3.5 0 110 7H12V2zM12 12.5a3.5 3.5 0 117 0 3.5 3.5 0 01-7 0zM5 19.5A3.5 3.5 0 018.5 16H12v3.5a3.5 3.5 0 11-7 0zM5 12.5A3.5 3.5 0 018.5 9H12v7H8.5A3.5 3.5 0 015 12.5z" /> },
+  { label: "Prototyping",       icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /> },
+  { label: "Visual Design",     icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0zM2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /> },
+  { label: "Brand Identity",    icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /> },
+  { label: "UI Design",         icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /> },
+  { label: "Interaction Design", icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" /> },
+  { label: "Usability Testing", icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /> },
+]
+
+function SkillTag({ label, icon }: { label: string; icon: React.ReactNode }) {
+  return (
+    <div
+      className="inline-flex items-center gap-2 shrink-0"
+      style={{
+        background: "#1e1e1e",
+        border: "1px solid #2e2e2e",
+        borderRadius: "100px",
+        padding: "10px 20px",
+        marginRight: "12px",
+      }}
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)">
+        {icon}
+      </svg>
+      <span
+        style={{
+          fontFamily: "var(--font-geist-sans)",
+          fontSize: "14px",
+          fontWeight: 400,
+          color: "rgba(255,255,255,0.75)",
+          whiteSpace: "nowrap",
+        }}
+      >
+        {label}
+      </span>
+    </div>
+  )
+}
+
 /* ─── Projects Section ───────────────────────────────── */
 const works = [
   {
@@ -415,92 +466,170 @@ function ProjectsSection() {
 }
 
 /* ─── About Section ──────────────────────────────────── */
+const skills = [
+  "Product Design", "UX Design", "Figma", "Framer",
+  "Photoshop", "Spline", "User Research", "Design Systems",
+]
+
 function AboutSection() {
-  const sectionRef = useRef<HTMLElement>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const el = sectionRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.2 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  const text =
-    "I'm Lateefah, a product designer who enjoys untangling complex problems and turning them into thoughtful, scalable digital experiences always balancing real user needs with meaningful business goals."
-  const words = text.split(" ")
-  const totalWords = words.length
-  // Spread the stagger across 2400ms total so each word animates at even intervals
-  const totalStagger = 2400
-  const perWord = totalStagger / totalWords
+  const { ref, visible } = useReveal()
 
   return (
     <section
       id="about"
-      ref={sectionRef}
-      className="relative flex flex-col items-center justify-center"
+      ref={ref as React.RefObject<HTMLElement>}
+      className={`relative transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       style={{
         backgroundImage: "url('/about-bg.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        minHeight: "100vh",
-        padding: "clamp(60px, 10vh, 120px) clamp(20px, 5vw, 48px)",
+        paddingTop: "clamp(60px, 10vh, 120px)",
+        paddingBottom: "clamp(60px, 10vh, 100px)",
+        paddingLeft: 0,
+        paddingRight: 0,
       }}
     >
-      <p
-        className="text-center max-w-[881px] w-full"
-        style={{
-          fontFamily: "var(--font-geist-sans)",
-          fontSize: "clamp(22px, 3.2vw, 36px)",
-          lineHeight: "1.6",
-          fontWeight: 400,
-          marginBottom: "60px",
-        }}
-      >
-        {words.map((word, i) => (
-          <span
-            key={i}
+      <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-[5fr_7fr] gap-10 md:gap-16 items-center px-5 md:px-10 lg:px-20">
+
+        {/* ── Left: Photo ── */}
+        <div
+          className="relative overflow-hidden w-full rounded-[20px]"
+          style={{
+            aspectRatio: "3 / 4",
+            background: "#e8e2d9",
+            border: "1px solid rgba(0,0,0,0.08)",
+          }}
+        >
+          <img
+            src="/lateefah-profile.jpg"
+            alt="Lateefah Abdulrahman"
+            className="w-full h-full object-cover object-top"
+          />
+        </div>
+
+        {/* ── Right: Content ── */}
+        <div className="flex flex-col gap-6 md:gap-7">
+
+          {/* Heading */}
+          <h2
             style={{
-              color: visible ? "#1a1a1a" : "#adadad",
-              transition: `color 700ms ease`,
-              transitionDelay: visible ? `${i * perWord}ms` : "0ms",
-              display: "inline",
+              fontFamily: "var(--font-anton)",
+              fontSize: "clamp(36px, 5vw, 64px)",
+              lineHeight: 1.05,
+              color: "#1a1a1a",
+              margin: 0,
             }}
           >
-            {word}
-            {i < words.length - 1 ? " " : ""}
-          </span>
-        ))}
-      </p>
+            Meet Lateefah
+          </h2>
 
-      {/* View all works button */}
-      <a
-        href="/all-projects"
-        className="relative overflow-hidden inline-flex items-center justify-center no-underline"
-        style={{
-          padding: "9px 41px",
-          borderRadius: "12px",
-          border: "1px solid #ff8411",
-          background: "#e16d00",
-          boxShadow: "inset 0px 0px 10.1px 3px rgba(255,255,255,0.47)",
-          fontFamily: "var(--font-geist-sans)",
-          fontSize: "16px",
-          fontWeight: 600,
-          color: "#f9f9f9",
-          whiteSpace: "nowrap",
-        }}
-      >
-        View all works
-      </a>
+          {/* Bio */}
+          <p
+            style={{
+              fontFamily: "var(--font-geist-sans)",
+              fontSize: "clamp(15px, 1.6vw, 17px)",
+              lineHeight: 1.8,
+              color: "rgba(0,0,0,0.55)",
+              margin: 0,
+            }}
+          >
+            I&apos;m Lateefah, a product designer who enjoys untangling complex
+            problems and turning them into thoughtful, scalable digital
+            experiences — always balancing real user needs with meaningful
+            business goals.
+          </p>
+
+          {/* Skill pills */}
+          <div className="flex flex-wrap gap-2">
+            {skills.map((skill) => (
+              <span
+                key={skill}
+                style={{
+                  fontFamily: "var(--font-geist-sans)",
+                  fontSize: "13px",
+                  color: "rgba(0,0,0,0.65)",
+                  background: "rgba(0,0,0,0.05)",
+                  border: "1px solid rgba(0,0,0,0.1)",
+                  borderRadius: "100px",
+                  padding: "6px 16px",
+                }}
+              >
+                {skill}
+              </span>
+            ))}
+          </div>
+
+          {/* Experience */}
+          <div
+            className="flex flex-col gap-4 pt-5"
+            style={{ borderTop: "1px solid rgba(0,0,0,0.1)" }}
+          >
+            {/* Current role */}
+            <div className="flex items-start gap-4">
+              <div className="flex flex-col items-center gap-1 pt-1 shrink-0">
+                <span className="w-[8px] h-[8px] rounded-full" style={{ background: "#e16d00" }} />
+                <span className="w-[1px] flex-1" style={{ background: "rgba(0,0,0,0.1)", minHeight: "20px" }} />
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "15px", fontWeight: 600, color: "#1a1a1a" }}>
+                  Product Designer
+                </span>
+                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "13px", color: "rgba(0,0,0,0.45)" }}>
+                  Choplife · Currently
+                </span>
+              </div>
+            </div>
+
+            {/* Stat */}
+            <div className="flex items-start gap-4">
+              <div className="flex flex-col items-center shrink-0 pt-1">
+                <span className="w-[8px] h-[8px] rounded-full" style={{ background: "rgba(0,0,0,0.2)" }} />
+              </div>
+              <div className="flex flex-col gap-0.5">
+                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "15px", fontWeight: 600, color: "#1a1a1a" }}>
+                  4+ Years Experience
+                </span>
+                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "13px", color: "rgba(0,0,0,0.45)" }}>
+                  Creative & product design industry
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <a
+            href="mailto:lateefahabdulrahman111@gmail.com"
+            className="self-start inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80"
+            style={{
+              background: "#e16d00",
+              color: "#fff",
+              fontFamily: "var(--font-geist-sans)",
+              fontSize: "14px",
+              fontWeight: 600,
+              padding: "13px 30px",
+              borderRadius: "100px",
+            }}
+          >
+            Contact me
+          </a>
+        </div>
+      </div>
+
+      {/* ── Scrolling marquee inside About ── */}
+      <div className="w-full overflow-hidden mt-16 md:mt-24">
+        {/* Row 1 — scrolls left */}
+        <div className="flex w-max marquee-left mb-3">
+          {[...row1, ...row1].map((item, i) => (
+            <SkillTag key={i} label={item.label} icon={item.icon} />
+          ))}
+        </div>
+        {/* Row 2 — scrolls right */}
+        <div className="flex w-max marquee-right">
+          {[...row2, ...row2].map((item, i) => (
+            <SkillTag key={i} label={item.label} icon={item.icon} />
+          ))}
+        </div>
+      </div>
     </section>
   )
 }
