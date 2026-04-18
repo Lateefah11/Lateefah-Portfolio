@@ -141,14 +141,14 @@ export const AnimatedFooter = ({
           )}
         </div>
 
-        {/* ── Giant brand name — full width ── */}
+        {/* ── Giant brand name — full width, centered ── */}
         <div
-          className="w-full overflow-hidden select-none pointer-events-none"
+          className="w-full overflow-hidden select-none pointer-events-none text-center"
           style={{
             fontFamily: "var(--font-anton)",
             fontSize: "27vw",
             color: "#fff",
-            opacity: 0.7,
+            opacity: 1,
             lineHeight: 0.83,
             whiteSpace: "nowrap",
           }}
