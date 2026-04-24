@@ -178,3 +178,15 @@
   animation: shimmer-sweep 2.2s ease-in-out infinite;
   pointer-events: none;
 }
+
+/* ── Case study responsive ── */
+@media (max-width: 768px) {
+  .cs-back-nav    { padding: 16px 20px !important; }
+  .cs-hero        { padding: 80px 20px 0 !important; }
+  .cs-hero h1     { font-size: clamp(56px, 14vw, 100px) !important; line-height: 1.1 !important; }
+  .cs-mockup      { padding: 0 20px 32px !important; }
+  .cs-meta        { padding: 32px 20px !important; grid-template-columns: 1fr !important; gap: 32px !important; }
+  .cs-other       { padding: 60px 20px 40px !important; }
+  .cs-other-grid  { grid-template-columns: 1fr !important; }
+  .cs-links       { flex-direction: column !important; gap: 16px !important; }
+}

@@ -7,7 +7,7 @@ export default function TbilsCaseStudy() {
     <div style={{ background: "#0D0D0D", minHeight: "100vh", overflowX: "hidden", color: "#f9f9f9" }}>
 
       {/* ── Back nav ── */}
-      <div style={{
+      <div className="cs-back-nav" style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
         padding: "24px 48px", display: "flex", alignItems: "center",
         background: "linear-gradient(to bottom, rgba(13,13,13,0.9) 0%, transparent 100%)",
@@ -29,7 +29,7 @@ export default function TbilsCaseStudy() {
       {/* ══════════════════════════════════════════
           SECTION 1: HERO
       ══════════════════════════════════════════ */}
-      <section style={{ padding: "43px 135px 0", background: "#0D0D0D" }}>
+      <section className="cs-hero" style={{ padding: "43px 135px 0", background: "#0D0D0D" }}>
         <p style={{
           fontFamily: "'Iowan Old Style', 'Georgia', serif",
           fontSize: "20px", lineHeight: "25px",
@@ -47,9 +47,9 @@ export default function TbilsCaseStudy() {
       </section>
 
       {/* ══════════════════════════════════════════
-          SECTION 2: HERO MOCKUP — tbils-hero.png
+          SECTION 2: HERO MOCKUP
       ══════════════════════════════════════════ */}
-      <section style={{ background: "#0D0D0D", padding: "0 135px 60px" }}>
+      <section className="cs-mockup" style={{ background: "#0D0D0D", padding: "0 135px 60px" }}>
         <div style={{ width: "100%", borderRadius: "24px", overflow: "hidden" }}>
           <img
             src="/tbils-hero.png"
@@ -62,8 +62,7 @@ export default function TbilsCaseStudy() {
       {/* ══════════════════════════════════════════
           SECTION 3: META + OVERVIEW
       ══════════════════════════════════════════ */}
-      <section style={{ background: "#0D0D0D", padding: "60px 135px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px" }}>
-        {/* Left: Meta */}
+      <section className="cs-meta" style={{ background: "#0D0D0D", padding: "60px 135px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
           {[
             { label: "Organization", value: "Tbils" },
@@ -79,7 +78,6 @@ export default function TbilsCaseStudy() {
           ))}
         </div>
 
-        {/* Right: Overview */}
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <h2 style={{ fontFamily: "var(--font-anton)", fontSize: "36px", lineHeight: "45px", color: "#f9f9f9" }}>
             Designing a Seamless Experience for Travel and Process Management
@@ -92,7 +90,7 @@ export default function TbilsCaseStudy() {
               The design focused on unifying a fragmented travel workflow, making it seamless to go from destination discovery to booking to visa submission without switching between tools or services.
             </p>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "8px" }}>
+          <div className="cs-links" style={{ display: "flex", justifyContent: "space-between", marginTop: "8px" }}>
             <Link href="/case-study/tbils/coming-soon" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
               <span style={{ fontFamily: "var(--font-anton)", fontSize: "24px", lineHeight: "34px", color: "#ffac5f", textDecoration: "underline", whiteSpace: "nowrap" }}>Read Full Case Study</span>
               <span style={{ color: "#ffac5f", fontSize: "20px" }}>↗</span>
@@ -110,32 +108,26 @@ export default function TbilsCaseStudy() {
       ══════════════════════════════════════════ */}
       <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
 
-        {/* Desktop web app */}
         <section style={{ width: "100%", background: "#1e1e1e", lineHeight: 0 }}>
           <img src="/tbils-desktop..png" alt="Tbils desktop app" style={{ width: "100%", height: "auto", display: "block" }} />
         </section>
 
-        {/* Services grid */}
         <section style={{ width: "100%", background: "#1e1e1e", lineHeight: 0 }}>
           <img src="/tbils-services.png" alt="Tbils services" style={{ width: "100%", height: "auto", display: "block" }} />
         </section>
 
-        {/* Mobile screens */}
         <section style={{ width: "100%", background: "#1e1e1e", lineHeight: 0 }}>
           <img src="/tbils-mobile-screens.png" alt="Tbils mobile screens" style={{ width: "100%", height: "auto", display: "block" }} />
         </section>
 
-        {/* Moodboard / design system */}
         <section style={{ width: "100%", background: "#1e1e1e", lineHeight: 0 }}>
           <img src="/tbils-moodboard.png" alt="Tbils design system" style={{ width: "100%", height: "auto", display: "block" }} />
         </section>
 
-        {/* Passport / visa */}
         <section style={{ width: "100%", background: "#1e1e1e", lineHeight: 0 }}>
           <img src="/tbils-passport.png" alt="Tbils visa application" style={{ width: "100%", height: "auto", display: "block" }} />
         </section>
 
-        {/* Study abroad */}
         <section style={{ width: "100%", background: "#1e1e1e", lineHeight: 0 }}>
           <img src="/tbils-visa.png" alt="Tbils study abroad visa" style={{ width: "100%", height: "auto", display: "block" }} />
         </section>
@@ -145,7 +137,7 @@ export default function TbilsCaseStudy() {
       {/* ══════════════════════════════════════════
           SEE OTHER PROJECTS
       ══════════════════════════════════════════ */}
-      <section style={{ background: "#0D0D0D", padding: "100px 135px 80px" }}>
+      <section className="cs-other" style={{ background: "#0D0D0D", padding: "100px 135px 80px" }}>
         <p style={{
           fontFamily: "'Iowan Old Style', Georgia, serif",
           fontSize: "20px", lineHeight: "25px",
@@ -161,11 +153,11 @@ export default function TbilsCaseStudy() {
         }}>
           Other Projects
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
+        <div className="cs-other-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
           {[
-            { title: "Sprekar",   tag: "Web App · AI / Translation", image: "/sprekar-mockup.png",   href: "/case-study/sprekar" },
-            { title: "Chopwin",   tag: "Mobile App · Gaming",         image: "/chopbet-mockup.png",   href: "/case-study/chopbet" },
-            { title: "Bricklage", tag: "Web App · Real Estate",        image: "/Buyers dashboard/Bricklage mockup.png", href: "/case-study/clubarant" },
+            { title: "Sprekar",   tag: "Web App · AI / Translation", image: "/sprekar-mockup.png",                      href: "/case-study/sprekar" },
+            { title: "Chopwin",   tag: "Mobile App · Gaming",         image: "/chopbet-mockup.png",                      href: "/case-study/chopbet" },
+            { title: "Bricklage", tag: "Web App · Real Estate",       image: "/Buyers dashboard/Bricklage mockup.png",   href: "/case-study/clubarant" },
           ].map((project) => (
             <OtherProjectCard key={project.title} {...project} />
           ))}

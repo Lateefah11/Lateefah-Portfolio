@@ -7,7 +7,7 @@ export default function SprekarCaseStudy() {
     <div style={{ background: "#0D0D0D", minHeight: "100vh", overflowX: "hidden", color: "#f9f9f9" }}>
 
       {/* ── Back nav ── */}
-      <div style={{
+      <div className="cs-back-nav" style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
         padding: "24px 48px", display: "flex", alignItems: "center",
         background: "linear-gradient(to bottom, rgba(13,13,13,0.9) 0%, transparent 100%)",
@@ -29,7 +29,7 @@ export default function SprekarCaseStudy() {
       {/* ══════════════════════════════════════════
           SECTION 1: HERO
       ══════════════════════════════════════════ */}
-      <section style={{ padding: "43px 135px 0", background: "#0D0D0D" }}>
+      <section className="cs-hero" style={{ padding: "43px 135px 0", background: "#0D0D0D" }}>
         <p style={{
           fontFamily: "'Iowan Old Style', 'Georgia', serif",
           fontSize: "20px", lineHeight: "25px",
@@ -49,7 +49,7 @@ export default function SprekarCaseStudy() {
       {/* ══════════════════════════════════════════
           SECTION 2: HERO MOCKUP
       ══════════════════════════════════════════ */}
-      <section style={{ background: "#0D0D0D", padding: "0 135px 60px" }}>
+      <section className="cs-mockup" style={{ background: "#0D0D0D", padding: "0 135px 60px" }}>
         <div style={{ width: "100%", borderRadius: "24px", overflow: "hidden" }}>
           <img
             src="/header.png"
@@ -62,7 +62,7 @@ export default function SprekarCaseStudy() {
       {/* ══════════════════════════════════════════
           SECTION 3: META + OVERVIEW
       ══════════════════════════════════════════ */}
-      <section style={{
+      <section className="cs-meta" style={{
         background: "#0D0D0D", padding: "60px 135px",
         display: "grid", gridTemplateColumns: "1fr 1fr", gap: "60px",
       }}>
@@ -92,7 +92,7 @@ export default function SprekarCaseStudy() {
               In a world where communication is fast but often misunderstood, Sprekar focuses on bridging the gap between intention and expression — making conversations feel more natural, structured, and meaningful.
             </p>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: "8px" }}>
+          <div className="cs-links" style={{ display: "flex", justifyContent: "space-between", marginTop: "8px" }}>
             <Link href="/case-study/sprekar/coming-soon" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
               <span style={{ fontFamily: "var(--font-anton)", fontSize: "24px", lineHeight: "34px", color: "#ffac5f", textDecoration: "underline", whiteSpace: "nowrap" }}>Read Full Case Study</span>
               <span style={{ color: "#ffac5f", fontSize: "20px" }}>↗</span>
@@ -147,7 +147,7 @@ export default function SprekarCaseStudy() {
       {/* ══════════════════════════════════════════
           SEE OTHER PROJECTS
       ══════════════════════════════════════════ */}
-      <section style={{ background: "#0D0D0D", padding: "100px 135px 80px" }}>
+      <section className="cs-other" style={{ background: "#0D0D0D", padding: "100px 135px 80px" }}>
         <p style={{
           fontFamily: "'Iowan Old Style', Georgia, serif",
           fontSize: "20px", lineHeight: "25px",
@@ -163,11 +163,11 @@ export default function SprekarCaseStudy() {
         }}>
           Other Projects
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
+        <div className="cs-other-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "24px" }}>
           {[
-            { title: "Chopwin",   tag: "Mobile App · Gaming",        image: "/chopbet-mockup.png",   href: "/case-study/chopbet" },
-            { title: "Tbils",     tag: "Web App · Travel & Visa",    image: "/tbils-mockup.png",     href: "/case-study/tbils" },
-            { title: "Bricklage", tag: "Web App · Real Estate",       image: "/Buyers dashboard/Bricklage mockup.png", href: "/case-study/clubarant" },
+            { title: "Chopwin",   tag: "Mobile App · Gaming",        image: "/chopbet-mockup.png",                      href: "/case-study/chopbet" },
+            { title: "Tbils",     tag: "Web App · Travel & Visa",    image: "/tbils-mockup.png",                        href: "/case-study/tbils" },
+            { title: "Bricklage", tag: "Web App · Real Estate",      image: "/Buyers dashboard/Bricklage mockup.png",   href: "/case-study/clubarant" },
           ].map((p) => <OtherProjectCard key={p.title} {...p} />)}
         </div>
       </section>
