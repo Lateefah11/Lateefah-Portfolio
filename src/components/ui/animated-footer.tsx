@@ -20,6 +20,8 @@ interface AnimatedFooterProps {
   socialLinks?: SocialLink[];
   navColumns?: NavColumn[];
   className?: string;
+  ctaHref?: string;
+  ctaLabel?: string;
 }
 
 export const AnimatedFooter = ({
@@ -29,6 +31,8 @@ export const AnimatedFooter = ({
   socialLinks = [],
   navColumns = [],
   className,
+  ctaHref,
+  ctaLabel = "Connect with me",
 }: AnimatedFooterProps) => {
   const year = new Date().getFullYear();
   const copyrightText = copyright ?? `© Lateefah Abdulrahman ${year}`;
@@ -37,7 +41,7 @@ export const AnimatedFooter = ({
     <section
       id="footer-sentinel"
       className={cn("relative w-full overflow-hidden", className)}
-      style={{ background: "#000" }}
+      style={{ background: "#0A0A0A" }}
     >
       <footer>
         {/* ── Top area: copyright+socials left | nav columns right ── */}
@@ -71,6 +75,29 @@ export const AnimatedFooter = ({
               >
                 {tagline}
               </p>
+            )}
+
+            {/* CTA button */}
+            {ctaHref && (
+              <a
+                href={ctaHref}
+                className="btn-shimmer inline-flex items-center gap-2 no-underline self-start"
+                style={{
+                  background: "#e8722a",
+                  color: "#fff",
+                  fontSize: "13.5px",
+                  fontFamily: "var(--font-geist-sans)",
+                  fontWeight: 600,
+                  padding: "10px 22px",
+                  borderRadius: "8px",
+                  marginTop: "4px",
+                }}
+              >
+                {ctaLabel}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
             )}
 
             {/* Social icons */}

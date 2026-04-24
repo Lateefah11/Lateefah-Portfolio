@@ -45,7 +45,7 @@ const HorizontalScrollCarousel = ({ cards, title, bgImage }: { cards: StepCard[]
     <div ref={targetRef} className="relative" style={{ height: scrollH }}>
       <div
         className="sticky top-0 flex h-screen items-center overflow-hidden"
-        style={bgImage ? { backgroundImage: `url('${bgImage}')`, backgroundSize: "cover", backgroundPosition: "center" } : undefined}
+        style={bgImage ? { backgroundImage: `url('${bgImage}')`, backgroundSize: "cover", backgroundPosition: "center" } : { background: "#202020" }}
       >
         <motion.div
           ref={stripRef}

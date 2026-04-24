@@ -7,39 +7,48 @@ import Link from "next/link"
 const allWorks = [
   {
     id: 1,
-    tag: "Mobile App · Gaming",
-    title: "Chopbet",
-    desc: "A sports betting and gaming platform with crash games, slots and live tournaments.",
-    image: "/chopbet-mockup.png",
-    href: "https://chopwin.sl/",
-    year: "2025",
-    isMockup: true,
-  },
-  {
-    id: 2,
     tag: "Web App · AI / Translation",
     title: "Sprekar",
     desc: "An AI-powered platform for seamless real-time speech translation across languages.",
     image: "/sprekar-mockup.png",
-    href: "https://www.sprekar.com/en",
+    href: "/case-study/sprekar",
     year: "2025",
   },
   {
+    id: 2,
+    tag: "Mobile App · Gaming",
+    title: "Chopbet",
+    desc: "A sports betting and gaming platform with crash games, slots and live tournaments.",
+    image: "/chopbet-mockup.png",
+    href: "/case-study/chopbet",
+    year: "2025",
+    isMockup: true,
+  },
+  {
     id: 3,
-    tag: "Web App · Real Estate",
+    tag: "Web App · Travel & Visa",
     title: "Tbils",
-    desc: "A transparent real estate platform connecting diaspora Nigerians with verified property listings.",
+    desc: "A travel platform where users can search and book flights, check visa requirements, and submit visa applications in one place.",
     image: "/tbils-mockup.png",
-    href: "https://www.tbils.com/",
+    href: "/case-study/tbils",
     year: "2024",
   },
   {
     id: 4,
-    tag: "Web App · F&B / SaaS",
-    title: "Clubarant",
-    desc: "A digital menu and QR ordering platform helping restaurants, bars, and lounges manage menus and boost sales.",
-    image: "/clubarant-mockup.png",
-    href: "https://www.clubarant.com/",
+    tag: "Web App · Real Estate",
+    title: "Bricklage",
+    desc: "A real estate marketplace where buyers can search, compare, and explore verified properties across Nigeria.",
+    image: "/Buyers dashboard/Bricklage mockup.png",
+    href: "/case-study/clubarant",
+    year: "2024",
+  },
+  {
+    id: 5,
+    tag: "Mobile App · Fintech",
+    title: "AzuCapital",
+    desc: "A fintech app empowering Africans with access to loans, savings, payments, and global banking tools — all from one app.",
+    image: "/Azucapital mockup.png",
+    href: "/case-study/azucapital",
     year: "2024",
   },
 ]
@@ -51,7 +60,7 @@ function ProjectCard({ work }: { work: (typeof allWorks)[0] }) {
   const cardContent = (
     <div
       className="relative overflow-hidden rounded-[8px] w-full"
-      style={{ aspectRatio: "16/9", background: "#242424" }}
+      style={{ aspectRatio: "16/9", background: "#141414" }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -98,8 +107,6 @@ function ProjectCard({ work }: { work: (typeof allWorks)[0] }) {
       {work.href ? (
         <a
           href={work.href}
-          target="_blank"
-          rel="noopener noreferrer"
           className="block no-underline cursor-pointer"
         >
           {cardContent}
@@ -141,11 +148,11 @@ function ProjectCard({ work }: { work: (typeof allWorks)[0] }) {
 /* ─── Page ───────────────────────────────────────────── */
 export default function AllProjectsPage() {
   return (
-    <main className="min-h-screen bg-[#1a1a1a]">
+    <main className="min-h-screen bg-[#0D0D0D]">
       {/* Header */}
       <div
         className="w-full flex items-center justify-between px-6 md:px-12 py-6 border-b border-white/10"
-        style={{ background: "#1a1a1a" }}
+        style={{ background: "#0D0D0D" }}
       >
         <Link
           href="/"

@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useRef } from "react"
 import { ParticleSphere } from "@/components/ui/particle-sphere"
-import HorizontalScrollCarousel, { type StepCard } from "@/components/ui/horizontal-scroll-carousel"
 import { AnimatedFooter } from "@/components/ui/animated-footer"
+import { BentoGrid, type BentoItem } from "@/components/ui/bento-grid"
 
 /* ─── Reveal Hook ────────────────────────────────────── */
 function useReveal() {
@@ -29,9 +29,16 @@ function useReveal() {
 }
 
 /* ─── Navbar ─────────────────────────────────────────── */
+const navLinks = [
+  { label: "Home",           href: "#" },
+  { label: "Featured works", href: "#featured-works" },
+  { label: "About",          href: "#about" },
+  { label: "Tool box",       href: "#technologies" },
+]
+
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [scrolled, setScrolled]   = useState(false)
+  const [menuOpen, setMenuOpen]   = useState(false)
   const [footerVisible, setFooterVisible] = useState(false)
 
   useEffect(() => {
@@ -51,136 +58,191 @@ function Navbar() {
     return () => observer.disconnect()
   }, [])
 
+  // Lock body scroll when drawer open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : ""
+    return () => { document.body.style.overflow = "" }
+  }, [menuOpen])
+
   return (
     <>
-      {/* Nav wrapper — centres the floating pill */}
+      {/* ── Transparent top bar (pre-scroll) ── */}
       <div
-        className="fixed top-5 left-0 right-0 z-50 flex justify-center px-4 md:px-8 pointer-events-none transition-all duration-500"
+        className="fixed top-6 left-0 right-0 z-50 flex items-center justify-between px-5 md:px-8 pointer-events-none transition-all duration-500"
         style={{
-          opacity: footerVisible ? 0 : 1,
-          transform: footerVisible ? "translateY(-20px)" : "translateY(0)",
-          pointerEvents: footerVisible ? "none" : undefined,
+          opacity: scrolled || footerVisible ? 0 : 1,
+          transform: scrolled ? "translateY(-12px)" : "translateY(0)",
         }}
       >
-        <nav
-          className={`pointer-events-auto w-full max-w-[1200px] flex items-center justify-between transition-all duration-300 px-6 py-5 rounded-[12px] border border-[#393939] ${
-            scrolled ? "bg-[#242424]/95 backdrop-blur-md" : "bg-[#242424]"
-          }`}
-        >
-          {/* Logo */}
-          <a href="#" className="no-underline shrink-0">
-            <span
-              className="text-[26px] leading-[22px] text-[#f9f9f9] whitespace-nowrap"
-              style={{ fontFamily: "var(--font-anton)" }}
-            >
-              TEE
-            </span>
-          </a>
-
-          {/* Desktop Links */}
-          <ul className="hidden md:flex items-center gap-5 list-none">
-            {[
-              { label: "Home", active: true },
-              { label: "Featured works", active: false },
-              { label: "About", active: false },
-              { label: "All projects", active: false },
-              { label: "Design approach", active: false },
-              { label: "Technologies", active: false },
-            ].map(({ label, active }) => {
-              const href =
-                label === "All projects"
-                  ? "/all-projects"
-                  : label === "Home"
-                  ? "#"
-                  : `#${label.toLowerCase().replace(/\s+/g, "-")}`
-              return (
-                <li key={label}>
-                  <a
-                    href={href}
-                    className="text-[16px] no-underline transition-colors"
-                    style={{
-                      fontFamily: "var(--font-geist-sans)",
-                      color: active ? "#fffafa" : "#868686",
-                      fontWeight: active ? 500 : 400,
-                    }}
-                  >
-                    {label}
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-
-          {/* CTA — Anton text, no button background */}
-          <a
-            href="mailto:lateefahabdulrahman111@gmail.com"
-            className="hidden md:inline text-[16px] leading-[22px] text-[#f9f9f9] no-underline shrink-0 hover:opacity-80 transition-opacity"
+        {/* Logo */}
+        <a href="#" className="pointer-events-auto no-underline">
+          <span
+            className="text-[26px] leading-[22px] text-[#f9f9f9]"
             style={{ fontFamily: "var(--font-anton)" }}
           >
-            Contact me
-          </a>
+            TEE
+          </span>
+        </a>
 
-          {/* Hamburger (mobile) */}
-          <button
-            className="md:hidden flex flex-col gap-[5px] bg-transparent border-0 cursor-pointer p-1"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            <span
-              className={`block w-[22px] h-[2px] bg-white rounded transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[7px]" : ""}`}
-            />
-            <span
-              className={`block w-[22px] h-[2px] bg-white rounded transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`}
-            />
-            <span
-              className={`block w-[22px] h-[2px] bg-white rounded transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`}
-            />
-          </button>
-        </nav>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="fixed top-[90px] left-4 right-4 z-40 bg-[#242424] border border-[#393939] rounded-[12px] flex flex-col gap-5 px-6 py-6">
-          {[
-            "Home",
-            "Featured works",
-            "About",
-            "All projects",
-            "Design approach",
-            "Technologies",
-          ].map((link, i) => {
-            const mobileHref =
-              link === "All projects"
-                ? "/all-projects"
-                : link === "Home"
-                ? "#"
-                : `#${link.toLowerCase().replace(/\s+/g, "-")}`
-            return (
+        {/* Centre nav links */}
+        <ul className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center gap-7 list-none pointer-events-auto">
+          {navLinks.map((link) => (
+            <li key={link.label}>
               <a
-                key={link}
-                href={mobileHref}
-                onClick={() => setMenuOpen(false)}
-                className="text-[16px] no-underline transition-colors"
+                href={link.href}
+                className="no-underline transition-colors duration-200"
                 style={{
                   fontFamily: "var(--font-geist-sans)",
-                  color: i === 0 ? "#fffafa" : "#868686",
-                  fontWeight: i === 0 ? 500 : 400,
+                  fontSize: "14px",
+                  color: "rgba(255,255,255,0.55)",
                 }}
+                onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.95)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
               >
-                {link}
+                {link.label}
               </a>
-            )
-          })}
-          <a
-            href="mailto:lateefahabdulrahman111@gmail.com"
-            className="text-[16px] leading-[22px] text-[#f9f9f9] no-underline mt-2 hover:opacity-80 transition-opacity"
-            style={{ fontFamily: "var(--font-anton)" }}
+            </li>
+          ))}
+        </ul>
+
+        {/* Spacer to keep logo left-aligned */}
+        <div className="w-[52px]" />
+      </div>
+
+      {/* ── Hamburger FAB (post-scroll) ── */}
+      <button
+        onClick={() => setMenuOpen(true)}
+        aria-label="Open menu"
+        className="pointer-events-auto fixed top-6 right-6 z-50 flex items-center justify-center rounded-full bg-white shadow-lg transition-all duration-400 cursor-pointer border-0"
+        style={{
+          width: "52px",
+          height: "52px",
+          opacity: !footerVisible ? 1 : 0,
+          transform: !footerVisible ? "scale(1)" : "scale(0.8)",
+          pointerEvents: !footerVisible ? "auto" : "none",
+          transitionProperty: "opacity, transform",
+          transitionDuration: "350ms",
+          transitionTimingFunction: "cubic-bezier(0.25,0.46,0.45,0.94)",
+        }}
+      >
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+          <rect x="0" y="0"  width="18" height="2" rx="1" fill="#111" />
+          <rect x="0" y="10" width="18" height="2" rx="1" fill="#111" />
+        </svg>
+      </button>
+
+      {/* ── Side drawer backdrop ── */}
+      <div
+        className="fixed inset-0 z-[60] transition-all duration-400"
+        style={{
+          background: "rgba(0,0,0,0.55)",
+          opacity: menuOpen ? 1 : 0,
+          pointerEvents: menuOpen ? "auto" : "none",
+          backdropFilter: menuOpen ? "blur(4px)" : "blur(0px)",
+          transitionProperty: "opacity, backdrop-filter",
+          transitionDuration: "380ms",
+        }}
+        onClick={() => setMenuOpen(false)}
+      />
+
+      {/* ── Side drawer panel ── */}
+      <div
+        className="fixed top-0 right-0 bottom-0 z-[70] flex flex-col"
+        style={{
+          width: "min(420px, 90vw)",
+          background: "#0A0A0A",
+          transform: menuOpen ? "translateX(0)" : "translateX(100%)",
+          transition: "transform 420ms cubic-bezier(0.25,0.46,0.45,0.94)",
+          padding: "clamp(28px,5vw,48px)",
+        }}
+      >
+        {/* Close button */}
+        <div className="flex justify-end mb-12">
+          <button
+            onClick={() => setMenuOpen(false)}
+            aria-label="Close menu"
+            className="flex items-center justify-center rounded-full bg-white cursor-pointer border-0 transition-opacity hover:opacity-80"
+            style={{ width: "52px", height: "52px" }}
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M1 1l12 12M13 1L1 13" stroke="#111" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </button>
+        </div>
+
+        {/* Navigation label */}
+        <p
+          className="mb-6 tracking-[0.16em] uppercase"
+          style={{
+            fontFamily: "var(--font-geist-sans)",
+            fontSize: "11px",
+            color: "rgba(255,255,255,0.3)",
+          }}
+        >
+          Navigation
+        </p>
+        <div style={{ height: "1px", background: "rgba(255,255,255,0.08)", marginBottom: "32px" }} />
+
+        {/* Nav items */}
+        <nav className="flex flex-col gap-1 flex-1">
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={() => setMenuOpen(false)}
+              className="no-underline group flex items-center gap-3 transition-colors duration-200"
+              style={{
+                fontFamily: "var(--font-anton)",
+                fontSize: "clamp(32px, 6vw, 52px)",
+                lineHeight: 1.15,
+                color: "rgba(255,255,255,0.85)",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = "#ffffff")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.85)")}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+
+        {/* Socials */}
+        <div className="mt-auto pt-8" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+          <p
+            className="mb-4 tracking-[0.16em] uppercase"
+            style={{
+              fontFamily: "var(--font-geist-sans)",
+              fontSize: "11px",
+              color: "rgba(255,255,255,0.3)",
+            }}
           >
             Contact me
-          </a>
+          </p>
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            {[
+              { label: "LinkedIn",  href: "https://www.linkedin.com/in/lateefah-abdulrahman-634571348" },
+              { label: "WhatsApp", href: "https://wa.link/2wa261" },
+              { label: "Email",    href: "mailto:lateefahabdulrahman111@gmail.com" },
+            ].map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="no-underline transition-colors duration-200"
+                style={{
+                  fontFamily: "var(--font-geist-sans)",
+                  fontSize: "14px",
+                  color: "rgba(255,255,255,0.45)",
+                }}
+                onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.9)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
+              >
+                {s.label}
+              </a>
+            ))}
+          </div>
         </div>
-      )}
+      </div>
     </>
   )
 }
@@ -191,7 +253,7 @@ function Hero() {
 
   return (
     <div ref={outerRef} style={{ height: "210vh", position: "relative" }}>
-      <section className="sticky top-0 h-screen flex flex-col items-center justify-center text-center overflow-hidden px-6 bg-[#1a1a1a]">
+      <section className="sticky top-0 h-screen flex flex-col items-center justify-center text-center overflow-hidden px-6 bg-[#0D0D0D]">
 
         {/* Particle sphere background */}
         <ParticleSphere
@@ -283,183 +345,291 @@ function SkillTag({ label, icon }: { label: string; icon: React.ReactNode }) {
   )
 }
 
-/* ─── Projects Section ───────────────────────────────── */
-const works = [
-  {
-    id: 1,
-    tag: "Mobile App · Gaming",
-    title: "Chopbet",
-    desc: "A sports betting and gaming platform with crash games, slots and live tournaments.",
-    image: "",
-    isMockup: true,
-    year: "2025",
-  },
-  {
-    id: 2,
-    tag: "Web App · AI / Translation",
-    title: "Sprekar",
-    desc: "An AI-powered platform for seamless real-time speech translation across languages.",
-    image: "/sprekar-mockup.png",
-    href: "https://www.sprekar.com/en",
-    year: "2025",
-  },
-  {
-    id: 3,
-    tag: "Web App · Real Estate",
-    title: "Tbils",
-    desc: "A transparent real estate platform connecting diaspora Nigerians with verified property listings.",
-    image: "/tbils-mockup.png",
-    href: "https://www.tbils.com/",
-    year: "2024",
-  },
-  {
-    id: 4,
-    tag: "Web App · F&B / SaaS",
-    title: "Clubarant",
-    desc: "A digital menu and QR ordering platform helping restaurants, bars, and lounges manage menus and boost sales.",
-    image: "/clubarant-mockup.png",
-    href: "https://www.clubarant.com/",
-    year: "2024",
-  },
-  {
-    id: 5,
-    tag: "Mobile App · Social",
-    title: "IYXN Community",
-    desc: "A community-focused social app connecting people around shared cultural interests and values.",
-    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80",
-    year: "2024",
-  },
-  {
-    id: 6,
-    tag: "Mobile + Web · Travel",
-    title: "Explore Nigeria",
-    desc: "A location-based travel companion helping users discover hidden gems across Nigerian cities.",
-    image: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&auto=format&fit=crop&q=80",
-    year: "2023",
-  },
-]
+/* ─── Cursor Follow Label ────────────────────────────── */
+function CursorLabel() {
+  const labelRef = useRef<HTMLDivElement>(null)
+  const pos = useRef({ x: -300, y: -300 })
+  const target = useRef({ x: -300, y: -300 })
+  const visible = useRef(false)
+  const rafId = useRef<number | null>(null)
 
-/* ─── iPhone Mockup Card (Chopbet) ───────────────────── */
-function MockupCard({ work }: { work: (typeof works)[0] }) {
-  const [hovered, setHovered] = useState(false)
+  useEffect(() => {
+    const label = labelRef.current
+    if (!label) return
 
-  return (
-    <a
-      href="https://chopwin.sl/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="relative overflow-hidden cursor-pointer w-full h-full block"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{ background: "#1a1a1a" }}
-    >
-      {/* 3D iPhone render image — fills the card, slight scale on hover */}
-      <img
-        src="/chopbet-mockup.png"
-        alt="Chopbet app mockup"
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out"
-        style={{ transform: hovered ? "scale(1.04)" : "scale(1)" }}
-      />
+    const onMove = (e: MouseEvent) => {
+      target.current = { x: e.clientX, y: e.clientY }
+    }
 
-      {/* Hover overlay */}
-      <div className="absolute inset-0 z-20 transition-all duration-500 pointer-events-none"
-        style={{
-          backdropFilter: hovered ? "blur(6px)" : "blur(0px)",
-          WebkitBackdropFilter: hovered ? "blur(6px)" : "blur(0px)",
-          background: hovered ? "rgba(0,0,0,0.55)" : "rgba(0,0,0,0)",
-        }}
-      />
-      <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none transition-all duration-500"
-        style={{ opacity: hovered ? 1 : 0, transform: hovered ? "translateY(0)" : "translateY(10px)" }}>
-        <h3 className="text-white font-black tracking-tight text-center px-6 leading-tight"
-          style={{ fontFamily: "var(--font-anton)", fontSize: "clamp(28px,4vw,52px)" }}>
-          {work.title}
-        </h3>
-      </div>
-    </a>
-  )
-}
+    const setVisible = (next: boolean) => {
+      if (next === visible.current) return
+      visible.current = next
+      label.style.opacity = next ? "1" : "0"
+      label.style.transform = next ? "scale(1)" : "scale(0.88)"
+    }
 
-/* ─── Work Card ──────────────────────────────────────── */
-function WorkCard({ work }: { work: (typeof works)[0] }) {
-  const [hovered, setHovered] = useState(false)
+    const tick = () => {
+      // Re-check hit every frame so scroll moves are caught without mouse movement
+      const el = document.elementFromPoint(target.current.x, target.current.y)
+      const over = !!(el as Element | null)?.closest?.("[data-cursor-label]")
+      setVisible(over)
 
-  const inner = (
-    <>
-      <img
-        src={work.image}
-        alt={work.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out"
-        style={{ transform: hovered ? "scale(1.06)" : "scale(1)" }}
-      />
-      <div className="absolute inset-0 transition-all duration-500"
-        style={{
-          backdropFilter: hovered ? "blur(6px)" : "blur(0px)",
-          WebkitBackdropFilter: hovered ? "blur(6px)" : "blur(0px)",
-          background: hovered ? "rgba(0,0,0,0.55)" : "rgba(0,0,0,0)",
-        }}
-      />
-      <div className="absolute inset-0 flex items-center justify-center transition-all duration-500"
-        style={{ opacity: hovered ? 1 : 0, transform: hovered ? "translateY(0px)" : "translateY(10px)" }}>
-        <h3 className="text-white text-[clamp(22px,3vw,42px)] font-black tracking-tight text-center px-6 leading-tight"
-          style={{ fontFamily: "var(--font-anton)" }}>
-          {work.title}
-        </h3>
-      </div>
-    </>
-  )
+      // Lerp — lag behind cursor for premium feel
+      pos.current.x += (target.current.x - pos.current.x) * 0.1
+      pos.current.y += (target.current.y - pos.current.y) * 0.1
+      label.style.left = `${pos.current.x + 18}px`
+      label.style.top = `${pos.current.y + 16}px`
+      rafId.current = requestAnimationFrame(tick)
+    }
 
-  if (work.href) {
-    return (
-      <a
-        href={work.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="relative overflow-hidden cursor-pointer w-full h-full block"
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
-        {inner}
-      </a>
-    )
-  }
+    document.addEventListener("mousemove", onMove)
+    rafId.current = requestAnimationFrame(tick)
+
+    return () => {
+      document.removeEventListener("mousemove", onMove)
+      if (rafId.current !== null) cancelAnimationFrame(rafId.current)
+    }
+  }, [])
 
   return (
     <div
-      className="relative overflow-hidden cursor-pointer w-full h-full"
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      ref={labelRef}
+      style={{
+        position: "fixed",
+        left: 0,
+        top: 0,
+        pointerEvents: "none",
+        zIndex: 9999,
+        opacity: 0,
+        transform: "scale(0.88)",
+        transition: "opacity 0.22s ease, transform 0.22s ease",
+        background: "#fff",
+        color: "#111",
+        padding: "9px 20px",
+        borderRadius: "999px",
+        fontFamily: "var(--font-geist-sans)",
+        fontSize: "13px",
+        fontWeight: 600,
+        letterSpacing: "0.01em",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.08)",
+        whiteSpace: "nowrap",
+        userSelect: "none",
+      }}
     >
-      {inner}
+      See Details →
     </div>
   )
 }
 
+/* ─── Projects Section ───────────────────────────────── */
+const works = [
+  {
+    id: 1,
+    tag: "Web App · AI / Translation",
+    title: "Sprekar",
+    image: "/sprekar-mockup.png",
+    href: "/case-study/sprekar",
+    year: "2025",
+  },
+  {
+    id: 2,
+    tag: "Mobile App · Gaming",
+    title: "Chopbet",
+    image: "/chopbet-mockup.png",
+    href: "/case-study/chopbet",
+    year: "2025",
+    isMockup: true,
+  },
+  {
+    id: 3,
+    tag: "Web App · Travel & Visa",
+    title: "Tbils",
+    image: "/tbils-mockup.png",
+    href: "/case-study/tbils",
+    year: "2024",
+  },
+  {
+    id: 4,
+    tag: "Web App · Real Estate",
+    title: "Bricklage",
+    image: "/Buyers dashboard/Bricklage mockup.png",
+    href: "/case-study/clubarant",
+    year: "2024",
+  },
+  {
+    id: 5,
+    tag: "Mobile App · Fintech",
+    title: "AzuCapital",
+    image: "/Azucapital mockup.png",
+    href: "/case-study/azucapital",
+    year: "2024",
+  },
+]
+
+/* ─── Projects Section — Editorial List ─────────────── */
 function ProjectsSection() {
-  const shown = works.slice(0, 4)
+  const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [previewTop, setPreviewTop] = useState(0)
+  const { ref, visible } = useReveal()
+  const listRef = useRef<HTMLDivElement>(null)
+  const rowRefs = useRef<(HTMLAnchorElement | null)[]>([])
+
+  const PREVIEW_H = 240
+
+  const handleRowEnter = (i: number) => {
+    setActiveIndex(i)
+    const row = rowRefs.current[i]
+    const list = listRef.current
+    if (!row || !list) return
+    const rowRect = row.getBoundingClientRect()
+    const listRect = list.getBoundingClientRect()
+    const rowCenterY = rowRect.top - listRect.top + rowRect.height / 2
+    setPreviewTop(rowCenterY - PREVIEW_H / 2)
+  }
 
   return (
-    <section id="featured-works" className="relative bg-[#111111] p-2">
-      <div className="relative grid grid-cols-1 md:grid-cols-2 gap-2">
-        {shown.map((work) => (
-          <div key={work.id} className="h-[280px] md:h-[600px]">
-            {work.isMockup ? (
-              <MockupCard work={work} />
-            ) : (
-              <WorkCard work={work} />
-            )}
-          </div>
-        ))}
-
-        {/* "See all works" pill — dead center at the row seam */}
-        <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
-          <a
-            href="/all-projects"
-            className="inline-flex items-center gap-2 px-5 md:px-7 py-2.5 md:py-3.5 rounded-full bg-white text-black text-[12px] md:text-[14px] font-semibold no-underline shadow-xl hover:bg-[#111] hover:text-white transition-all duration-300 whitespace-nowrap"
+    <section
+      id="featured-works"
+      ref={ref as React.RefObject<HTMLElement>}
+      className={`relative transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      style={{
+        background: "#0D0D0D",
+        padding: "clamp(40px, 8vh, 100px) clamp(20px, 5vw, 200px)",
+      }}
+    >
+      <div className="max-w-[1200px] mx-auto">
+        {/* Desktop: list with floating preview */}
+        <div ref={listRef} className="hidden md:block relative">
+          {/* Floating image preview — follows hovered row vertically */}
+          <div
+            className="pointer-events-none absolute left-1/2 z-20 -translate-x-1/2"
+            style={{
+              width: "340px",
+              height: `${PREVIEW_H}px`,
+              top: previewTop,
+              transition: "top 350ms cubic-bezier(0.25,0.46,0.45,0.94)",
+            }}
           >
-            See all works
-          </a>
+            {works.map((work, i) => (
+              <div
+                key={work.id}
+                className="absolute inset-0 rounded-[12px] overflow-hidden"
+                style={{
+                  opacity: activeIndex === i ? 1 : 0,
+                  transform: activeIndex === i ? "scale(1) translateY(0px)" : "scale(0.97) translateY(10px)",
+                  transition: "opacity 350ms cubic-bezier(0.25,0.46,0.45,0.94), transform 350ms cubic-bezier(0.25,0.46,0.45,0.94)",
+                }}
+              >
+                <img
+                  src={work.image}
+                  alt={work.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Project rows */}
+          {works.map((work, i) => (
+            <a
+              key={work.id}
+              ref={el => { rowRefs.current[i] = el }}
+              href={work.href}
+              data-cursor-label="true"
+              className="group flex items-center justify-between no-underline"
+              style={{
+                padding: "clamp(22px, 3.5vw, 36px) 0",
+                borderBottom: "1px solid rgba(255,255,255,0.1)",
+                transition: "opacity 300ms ease",
+                opacity: activeIndex === null ? 1 : activeIndex === i ? 1 : 0.28,
+              }}
+              onMouseEnter={() => handleRowEnter(i)}
+              onMouseLeave={() => setActiveIndex(null)}
+            >
+              {/* Left: title */}
+              <span
+                style={{
+                  fontFamily: "var(--font-anton)",
+                  fontSize: "clamp(36px, 5.5vw, 76px)",
+                  lineHeight: 1,
+                  color: activeIndex === i ? "#f9f9f9" : "rgba(255,255,255,0.75)",
+                  letterSpacing: "-0.5px",
+                  transition: "color 300ms ease",
+                }}
+              >
+                {work.title}
+              </span>
+
+              {/* Right: meta */}
+              <div className="flex flex-col items-end gap-1 shrink-0 ml-8">
+                <span
+                  style={{
+                    fontFamily: "var(--font-geist-sans)",
+                    fontSize: "13px",
+                    color: activeIndex === i ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.3)",
+                    letterSpacing: "0.04em",
+                    transition: "color 300ms ease",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {work.tag}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-geist-sans)",
+                    fontSize: "11px",
+                    color: "rgba(255,255,255,0.2)",
+                    letterSpacing: "0.08em",
+                    transition: "color 300ms ease",
+                  }}
+                >
+                  {work.year}
+                </span>
+              </div>
+            </a>
+          ))}
+
         </div>
+
+        {/* Mobile: image + title stacked, no wrapper card */}
+        <div className="md:hidden flex flex-col gap-8">
+          {works.map((work) => (
+            <a key={work.id} href={work.href} className="block no-underline">
+              <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9", borderRadius: "12px" }}>
+                <img
+                  src={work.image}
+                  alt={work.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex items-center justify-between mt-3 px-1">
+                <span
+                  style={{
+                    fontFamily: "var(--font-anton)",
+                    fontSize: "24px",
+                    color: "#f9f9f9",
+                    lineHeight: 1,
+                  }}
+                >
+                  {work.title}
+                </span>
+                <span
+                  style={{
+                    fontFamily: "var(--font-geist-sans)",
+                    fontSize: "11px",
+                    color: "rgba(255,255,255,0.35)",
+                    letterSpacing: "0.06em",
+                    textAlign: "right",
+                    maxWidth: "120px",
+                  }}
+                >
+                  {work.tag}
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+
       </div>
     </section>
   )
@@ -480,30 +650,29 @@ function AboutSection() {
       ref={ref as React.RefObject<HTMLElement>}
       className={`relative transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       style={{
-        backgroundImage: "url('/about-bg.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        paddingTop: "clamp(60px, 10vh, 120px)",
-        paddingBottom: "clamp(60px, 10vh, 100px)",
-        paddingLeft: 0,
-        paddingRight: 0,
+        background: "#0D0D0D",
+        paddingTop: "clamp(40px, 10vh, 120px)",
+        paddingBottom: "clamp(40px, 10vh, 100px)",
+        paddingLeft: "clamp(20px, 5vw, 200px)",
+        paddingRight: "clamp(20px, 5vw, 200px)",
       }}
     >
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-[5fr_7fr] gap-10 md:gap-16 items-center px-5 md:px-10 lg:px-20">
+      <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-[5fr_7fr] gap-10 md:gap-16 items-stretch">
 
         {/* ── Left: Photo ── */}
         <div
-          className="relative overflow-hidden w-full rounded-[20px]"
+          className="relative overflow-hidden w-full"
           style={{
-            aspectRatio: "3 / 4",
-            background: "#e8e2d9",
-            border: "1px solid rgba(0,0,0,0.08)",
+            borderRadius: "12px",
+            background: "#181818",
+            border: "1px solid rgba(255,255,255,0.08)",
+            minHeight: "420px",
           }}
         >
           <img
             src="/lateefah-profile.jpg"
             alt="Lateefah Abdulrahman"
-            className="w-full h-full object-cover object-top"
+            className="absolute inset-0 w-full h-full object-cover object-top"
           />
         </div>
 
@@ -516,7 +685,7 @@ function AboutSection() {
               fontFamily: "var(--font-anton)",
               fontSize: "clamp(36px, 5vw, 64px)",
               lineHeight: 1.05,
-              color: "#1a1a1a",
+              color: "#f9f9f9",
               margin: 0,
             }}
           >
@@ -529,52 +698,33 @@ function AboutSection() {
               fontFamily: "var(--font-geist-sans)",
               fontSize: "clamp(15px, 1.6vw, 17px)",
               lineHeight: 1.8,
-              color: "rgba(0,0,0,0.55)",
+              color: "rgba(255,255,255,0.6)",
               margin: 0,
             }}
           >
-            I&apos;m Lateefah, a product designer who enjoys untangling complex
-            problems and turning them into thoughtful, scalable digital
-            experiences — always balancing real user needs with meaningful
-            business goals.
+            I&apos;m Lateefah, a product designer who enjoys untangling complex problems and turning them into thoughtful, scalable digital experiences, always balancing real user needs with meaningful business goals.
+            <br /><br />
+            I wear many hats, UI/UX designer by profession, charcoal artist and a reader by passion.
+            <br /><br />
+            Each role fuels a different side of me: I create with purpose, connect with people, compete with heart, and give back with intention.
           </p>
-
-          {/* Skill pills */}
-          <div className="flex flex-wrap gap-2">
-            {skills.map((skill) => (
-              <span
-                key={skill}
-                style={{
-                  fontFamily: "var(--font-geist-sans)",
-                  fontSize: "13px",
-                  color: "rgba(0,0,0,0.65)",
-                  background: "rgba(0,0,0,0.05)",
-                  border: "1px solid rgba(0,0,0,0.1)",
-                  borderRadius: "100px",
-                  padding: "6px 16px",
-                }}
-              >
-                {skill}
-              </span>
-            ))}
-          </div>
 
           {/* Experience */}
           <div
             className="flex flex-col gap-4 pt-5"
-            style={{ borderTop: "1px solid rgba(0,0,0,0.1)" }}
+            style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
           >
             {/* Current role */}
             <div className="flex items-start gap-4">
               <div className="flex flex-col items-center gap-1 pt-1 shrink-0">
                 <span className="w-[8px] h-[8px] rounded-full" style={{ background: "#e16d00" }} />
-                <span className="w-[1px] flex-1" style={{ background: "rgba(0,0,0,0.1)", minHeight: "20px" }} />
+                <span className="w-[1px] flex-1" style={{ background: "rgba(255,255,255,0.1)", minHeight: "20px" }} />
               </div>
               <div className="flex flex-col gap-0.5">
-                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "15px", fontWeight: 600, color: "#1a1a1a" }}>
+                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "15px", fontWeight: 600, color: "#f9f9f9" }}>
                   Product Designer
                 </span>
-                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "13px", color: "rgba(0,0,0,0.45)" }}>
+                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "13px", color: "rgba(255,255,255,0.45)" }}>
                   Choplife · Currently
                 </span>
               </div>
@@ -583,13 +733,13 @@ function AboutSection() {
             {/* Stat */}
             <div className="flex items-start gap-4">
               <div className="flex flex-col items-center shrink-0 pt-1">
-                <span className="w-[8px] h-[8px] rounded-full" style={{ background: "rgba(0,0,0,0.2)" }} />
+                <span className="w-[8px] h-[8px] rounded-full" style={{ background: "rgba(255,255,255,0.2)" }} />
               </div>
               <div className="flex flex-col gap-0.5">
-                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "15px", fontWeight: 600, color: "#1a1a1a" }}>
+                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "15px", fontWeight: 600, color: "#f9f9f9" }}>
                   4+ Years Experience
                 </span>
-                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "13px", color: "rgba(0,0,0,0.45)" }}>
+                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "13px", color: "rgba(255,255,255,0.45)" }}>
                   Creative & product design industry
                 </span>
               </div>
@@ -599,7 +749,7 @@ function AboutSection() {
           {/* CTA */}
           <a
             href="mailto:lateefahabdulrahman111@gmail.com"
-            className="self-start inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80"
+            className="btn-shimmer self-start inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80"
             style={{
               background: "#e16d00",
               color: "#fff",
@@ -607,7 +757,7 @@ function AboutSection() {
               fontSize: "14px",
               fontWeight: 600,
               padding: "13px 30px",
-              borderRadius: "100px",
+              borderRadius: "12px",
             }}
           >
             Contact me
@@ -615,129 +765,119 @@ function AboutSection() {
         </div>
       </div>
 
-      {/* ── Scrolling marquee inside About ── */}
-      <div className="w-full overflow-hidden mt-16 md:mt-24">
-        {/* Row 1 — scrolls left */}
-        <div className="flex w-max marquee-left mb-3">
-          {[...row1, ...row1].map((item, i) => (
-            <SkillTag key={i} label={item.label} icon={item.icon} />
-          ))}
-        </div>
-        {/* Row 2 — scrolls right */}
-        <div className="flex w-max marquee-right">
-          {[...row2, ...row2].map((item, i) => (
-            <SkillTag key={i} label={item.label} icon={item.icon} />
-          ))}
-        </div>
-      </div>
     </section>
   )
 }
 
-/* ─── Design Approach ────────────────────────────────── */
-const approachSteps: StepCard[] = [
+
+/* ─── Services ───────────────────────────────────────── */
+const serviceItems: BentoItem[] = [
   {
-    id: 1,
-    num: "Step 1",
-    title: "Problem-first thinking",
-    desc: "I focus on understanding user pain points and business constraints before jumping into solutions.",
+    title: "UX & Product Design",
+    description: "End-to-end product design — from discovery and research to wireframes, prototypes, and polished high-fidelity UI that solves real user problems.",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+      </svg>
+    ),
+    status: "Core service",
+    tags: ["Research", "Prototyping", "UI"],
+    hasPersistentHover: true,
   },
   {
-    id: 2,
-    num: "Step 2",
-    title: "Designing for real-world use",
-    desc: "My designs consider edge cases, scalability, and handoff to developers.",
+    title: "Mobile & Web App Design",
+    description: "Intuitive, pixel-perfect interfaces for mobile and web applications, designed with performance, accessibility, and developer handoff in mind.",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+      </svg>
+    ),
+    status: "Available",
+    tags: ["Mobile", "Web", "Handoff"],
   },
   {
-    id: 3,
-    num: "Step 3",
-    title: "Collaboration & clarity",
-    desc: "I communicate decisions clearly with stakeholders, PMs, and engineers.",
+    title: "Design Systems",
+    description: "Scalable component libraries and design systems that keep product teams consistent, efficient, and aligned across every platform and touchpoint.",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+    ),
+    status: "Available",
+    tags: ["Components", "Tokens"],
   },
   {
-    id: 4,
-    num: "Step 4",
-    title: "97%",
-    desc: "Clients hire again for future work",
-    isStat: true,
+    title: "User Research & Testing",
+    description: "In-depth user research, usability testing, and insight synthesis that ground every design decision in real behaviour and validated assumptions.",
+    icon: (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    ),
+    status: "Available",
+    tags: ["Research", "Testing"],
   },
 ]
 
-function ApproachSection() {
-  return (
-    <section id="design-approach">
-      <HorizontalScrollCarousel
-        cards={approachSteps}
-        bgImage="/approach-bg.png"
-        title={
-          <h2
-            className="text-[clamp(32px,4vw,52px)] text-white"
-            style={{
-              fontFamily: "var(--font-anton)",
-              fontWeight: 400,
-              lineHeight: 1.1,
-              letterSpacing: "0px",
-            }}
-          >
-            My design
-            <br />
-            process
-          </h2>
-        }
-      />
-    </section>
-  )
-}
-
-/* ─── Stats ──────────────────────────────────────────── */
-function StatsSection() {
-  const stats = [
-    { number: "20", suffix: "+", label: "Successful projects completed" },
-    { number: "4",  suffix: "+", label: "Years of experience in the creative industry" },
-    { number: "99", suffix: "%", label: "Customer satisfaction rate" },
-    { number: "10", suffix: "M", label: "In Client revenue growth" },
-  ]
+function ServicesSection() {
+  const { ref, visible } = useReveal()
 
   return (
-    <section className="w-full bg-[#1a1a1a]">
-      <div className="grid grid-cols-2 md:grid-cols-4 px-6 md:px-[60px]">
-        {stats.map((stat, i) => (
+    <section
+      ref={ref as React.RefObject<HTMLElement>}
+      className={`relative transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+      style={{
+        background: "#0D0D0D",
+        padding: "clamp(40px, 8vh, 100px) clamp(20px, 5vw, 200px)",
+      }}
+    >
+      <div className="max-w-[1200px] mx-auto">
+        <h2
+          className="text-center"
+          style={{
+            fontFamily: "var(--font-anton)",
+            fontSize: "clamp(36px, 5vw, 60px)",
+            lineHeight: 1.05,
+            color: "#f9f9f9",
+            fontWeight: 400,
+            margin: "0 0 90px",
+          }}
+        >
+          My design services
+        </h2>
+        <BentoGrid items={serviceItems} />
+
+        {/* Scrolling skills marquee */}
+        <div className="relative w-full overflow-hidden mt-16 md:mt-20">
+          {/* Left fade */}
           <div
-            key={stat.number + stat.suffix}
-            className={[
-              "flex flex-col justify-center gap-3 md:gap-10 py-10 md:py-0 px-4 md:pl-7 md:pr-0",
-              i % 2 === 1 ? "border-l border-[#303030]" : "",
-              i >= 2 ? "border-t border-[#303030] md:border-t-0" : "",
-              i > 0 ? "md:border-l md:border-[#303030]" : "",
-            ].filter(Boolean).join(" ")}
-            style={{ minHeight: "clamp(160px, 20vw, 286px)" }}
-          >
-            <p
-              style={{
-                fontFamily: "var(--font-anton)",
-                fontSize: "clamp(36px, 5vw, 64px)",
-                lineHeight: "1",
-                color: "#f9f9f9",
-                margin: 0,
-              }}
-            >
-              <span>{stat.number}</span>
-              <span style={{ color: "#e16d00" }}>{stat.suffix}</span>
-            </p>
-            <p
-              style={{
-                fontFamily: "var(--font-geist-sans)",
-                fontSize: "clamp(12px, 1.4vw, 20px)",
-                lineHeight: "1.4",
-                color: "#b3b3b3",
-                fontWeight: 400,
-                margin: 0,
-              }}
-            >
-              {stat.label}
-            </p>
+            className="pointer-events-none absolute left-0 top-0 bottom-0 z-10"
+            style={{
+              width: "clamp(48px, 15vw, 480px)",
+              background: "linear-gradient(to right, #0D0D0D 0%, transparent 100%)",
+            }}
+          />
+          {/* Right fade */}
+          <div
+            className="pointer-events-none absolute right-0 top-0 bottom-0 z-10"
+            style={{
+              width: "clamp(48px, 15vw, 480px)",
+              background: "linear-gradient(to left, #0D0D0D 0%, transparent 100%)",
+            }}
+          />
+          {/* Row 1 — scrolls left */}
+          <div className="flex w-max marquee-left mb-3">
+            {[...row1, ...row1].map((item, i) => (
+              <SkillTag key={i} label={item.label} icon={item.icon} />
+            ))}
           </div>
-        ))}
+          {/* Row 2 — scrolls right */}
+          <div className="flex w-max marquee-right">
+            {[...row2, ...row2].map((item, i) => (
+              <SkillTag key={i} label={item.label} icon={item.icon} />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )
@@ -745,164 +885,84 @@ function StatsSection() {
 
 /* ─── Technologies ───────────────────────────────────── */
 const techTools = [
-  { num: "1", name: "Figma",      icon: "/tech-icons/figma.png" },
-  { num: "2", name: "Framer",     icon: "/tech-icons/framer.png" },
-  { num: "3", name: "Photoshop",  icon: "/tech-icons/photoshop.png" },
-  { num: "4", name: "Slack",      icon: "/tech-icons/slack.png" },
-  { num: "5", name: "Claude",     icon: "/tech-icons/claude.png" },
-  { num: "6", name: "Notion",     icon: "/tech-icons/notion.png" },
-  { num: "7", name: "Jira",       icon: "/tech-icons/jira.png" },
-  { num: "8", name: "Spline",     icon: "/tech-icons/spline.png" },
+  { name: "Figma",      category: "Interface Design Tool",  icon: "/tech-icons/figma.png" },
+  { name: "Notion",     category: "Productivity Tool",      icon: "/tech-icons/notion.png" },
+  { name: "Framer",     category: "No Code Design Tool",    icon: "/tech-icons/framer.png" },
+  { name: "Photoshop",  category: "Image Editing Tool",     icon: "/tech-icons/photoshop.png" },
+  { name: "Slack",      category: "Productivity Tool",      icon: "/tech-icons/slack.png" },
+  { name: "Claude",     category: "Claude Code",             icon: "/tech-icons/claude.png" },
+  { name: "Jira",       category: "Project Management",     icon: "/tech-icons/jira.png" },
+  { name: "Spline",     category: "3D Design Tool",         icon: "/tech-icons/spline.png" },
 ]
-
-/* Single tech card — 253×188px, border #dedede, number badge top-left, name bottom-right */
-function TechCard({ tool }: { tool: (typeof techTools)[0] }) {
-  return (
-    <div
-      className="relative overflow-hidden shrink-0"
-      style={{
-        width: "253px",
-        height: "188px",
-        border: "1px solid #dedede",
-      }}
-    >
-      {/* Number badge — top-left */}
-      <div
-        className="absolute top-0 left-0 flex items-center justify-center overflow-hidden"
-        style={{
-          background: "#dedede",
-          padding: "6px 20px",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-geist-sans)",
-            fontSize: "16px",
-            lineHeight: "25px",
-            color: "#636363",
-            fontWeight: 400,
-            margin: 0,
-          }}
-        >
-          {tool.num}
-        </p>
-      </div>
-
-      {/* Icon — centered */}
-      <div
-        className="absolute"
-        style={{
-          width: "70px",
-          height: "70px",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        <img src={tool.icon} alt={tool.name} className="w-full h-full object-contain" />
-      </div>
-
-      {/* Name — bottom-right */}
-      <div
-        className="absolute bottom-0 left-0 flex items-center justify-end"
-        style={{
-          width: "253px",
-          padding: "12px",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-geist-sans)",
-            fontSize: "16px",
-            lineHeight: "normal",
-            color: "#424242",
-            fontWeight: 400,
-            margin: 0,
-            whiteSpace: "nowrap",
-          }}
-        >
-          {tool.name}
-        </p>
-      </div>
-    </div>
-  )
-}
-
-/* Single tech card — mobile version, fills grid cell */
-function MobileTechCard({ tool }: { tool: (typeof techTools)[0] }) {
-  return (
-    <div
-      className="relative overflow-hidden flex flex-col items-center justify-center"
-      style={{ aspectRatio: "1 / 1", border: "1px solid #dedede" }}
-    >
-      {/* Number badge */}
-      <div className="absolute top-0 left-0 bg-[#dedede] px-3 py-1">
-        <p style={{ fontFamily: "var(--font-geist-sans)", fontSize: "12px", color: "#636363", margin: 0 }}>
-          {tool.num}
-        </p>
-      </div>
-      {/* Icon */}
-      <img src={tool.icon} alt={tool.name} className="w-10 h-10 object-contain" />
-      {/* Name */}
-      <div className="absolute bottom-0 right-0 p-2">
-        <p style={{ fontFamily: "var(--font-geist-sans)", fontSize: "12px", color: "#424242", margin: 0, whiteSpace: "nowrap" }}>
-          {tool.name}
-        </p>
-      </div>
-    </div>
-  )
-}
 
 function TechSection() {
   const { ref, visible } = useReveal()
-  const row1 = techTools.slice(0, 5)
-  const row2 = techTools.slice(5, 8)
 
   return (
     <section
       id="technologies"
       ref={ref as React.RefObject<HTMLElement>}
-      className={`relative flex flex-col items-center justify-center transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+      className={`relative transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
       style={{
-        backgroundImage: "url('/tech-bg.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-        padding: "clamp(60px, 8vh, 80px) clamp(16px, 4vw, 40px)",
+        background: "#0D0D0D",
+        padding: "clamp(40px, 8vh, 100px) clamp(20px, 5vw, 200px)",
       }}
     >
-      {/* Section title */}
-      <p
-        style={{
-          fontFamily: "var(--font-anton)",
-          fontSize: "clamp(36px, 8vw, 64px)",
-          lineHeight: "1.1",
-          color: "#242424",
-          fontWeight: 400,
-          whiteSpace: "nowrap",
-          marginBottom: "clamp(40px, 6vh, 90px)",
-        }}
-      >
-        Technologies
-      </p>
+      <div className="max-w-[1100px] mx-auto">
+        {/* Heading */}
+        <h2
+          className="text-center"
+          style={{
+            fontFamily: "var(--font-anton)",
+            fontSize: "clamp(36px, 5vw, 60px)",
+            lineHeight: 1.05,
+            color: "#f9f9f9",
+            fontWeight: 400,
+            margin: "0 0 90px",
+          }}
+        >
+          Tool box
+        </h2>
 
-      {/* Mobile: 2-col grid */}
-      <div className="grid grid-cols-2 lg:hidden w-full max-w-[480px]">
-        {techTools.map((tool) => (
-          <MobileTechCard key={tool.name} tool={tool} />
-        ))}
-      </div>
+        {/* Logo grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          {techTools.map((tool) => (
+            <div
+              key={tool.name}
+              className="group relative flex flex-col items-center justify-center rounded-2xl overflow-hidden transition-all duration-300"
+              style={{
+                background: "#111111",
+                border: "1px solid rgba(255,255,255,0.1)",
+                aspectRatio: "4/3",
+                padding: "clamp(20px, 3vw, 36px)",
+              }}
+            >
+              {/* Dot-grid texture — matches bento cards */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-[length:4px_4px]" />
+              </div>
 
-      {/* Desktop: original 2-row layout */}
-      <div className="hidden lg:flex flex-col" style={{ gap: "20px" }}>
-        <div className="flex items-center">
-          {row1.map((tool) => (
-            <TechCard key={tool.name} tool={tool} />
-          ))}
-        </div>
-        <div className="flex items-center justify-center">
-          {row2.map((tool) => (
-            <TechCard key={tool.name} tool={tool} />
+              <img
+                src={tool.icon}
+                alt={tool.name}
+                className="relative w-10 h-10 object-contain transition-all duration-300"
+                style={{
+                  filter: "brightness(0) invert(1)",
+                  opacity: 0.95,
+                }}
+              />
+              <span
+                className="relative mt-3 transition-colors duration-300 group-hover:text-white/60"
+                style={{
+                  fontFamily: "var(--font-geist-sans)",
+                  fontSize: "12px",
+                  color: "rgba(255,255,255,0.28)",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                {tool.name}
+              </span>
+            </div>
           ))}
         </div>
       </div>
@@ -917,10 +977,11 @@ function CTASection() {
   return (
     <section
       ref={ref as React.RefObject<HTMLElement>}
-      className={`bg-[#111] py-16 md:py-24 px-6 md:px-10 text-center transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+      className={`py-16 md:py-24 px-6 md:px-10 text-center transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+      style={{ background: "#0A0A0A" }}
     >
       <h2
-        className="text-[clamp(36px,6vw,64px)] font-extrabold tracking-[-2px] leading-[1.1] text-white max-w-[600px] mx-auto mb-5"
+        className="text-[clamp(30px,6vw,64px)] font-extrabold tracking-[-1px] md:tracking-[-2px] leading-[1.1] text-white max-w-[600px] mx-auto mb-5"
         style={{ fontFamily: "var(--font-display)" }}
       >
         Have a product
@@ -933,19 +994,10 @@ function CTASection() {
       </p>
       <a
         href="mailto:lateefahabdulrahman111@gmail.com"
-        className="inline-flex items-center gap-2 bg-[#e8722a] text-white text-[13.5px] font-semibold px-8 py-3.5 rounded-lg hover:bg-[#d4641e] transition-colors no-underline"
+        className="btn-shimmer inline-flex items-center gap-2 bg-[#e8722a] text-white text-[13.5px] font-semibold px-8 py-3.5 rounded-lg hover:bg-[#d4641e] transition-colors no-underline"
       >
         Connect with me
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <line x1="5" y1="12" x2="19" y2="12" />
           <polyline points="12 5 19 12 12 19" />
         </svg>
@@ -956,26 +1008,7 @@ function CTASection() {
 
 /* ─── Footer ─────────────────────────────────────────── */
 function Footer() {
-  const socialLinks = [
-    {
-      icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-        </svg>
-      ),
-      href: "https://www.linkedin.com/in/lateefah-abdulrahman-634571348",
-      label: "LinkedIn",
-    },
-    {
-      icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-          <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>
-        </svg>
-      ),
-      href: "mailto:lateefahabdulrahman111@gmail.com",
-      label: "Email",
-    },
-  ]
+  const socialLinks: { icon: React.ReactNode; href: string; label: string }[] = []
 
   const navColumns = [
     {
@@ -989,8 +1022,7 @@ function Footer() {
       heading: "Info",
       links: [
         { label: "About", href: "#about" },
-        { label: "Design approach", href: "#design-approach" },
-        { label: "Technologies", href: "#technologies" },
+        { label: "Tool box", href: "#technologies" },
       ],
     },
     {
@@ -1008,6 +1040,8 @@ function Footer() {
       tagline="Designed with purpose. Built with care."
       socialLinks={socialLinks}
       navColumns={navColumns}
+      ctaHref="mailto:lateefahabdulrahman111@gmail.com"
+      ctaLabel="Connect with me"
     />
   )
 }
@@ -1019,36 +1053,24 @@ function ResumeButton() {
       href="https://docs.google.com/document/d/1Ou4iep9L-jh0QKcEXkNbW6BL90sfhX7DJf9YCj8RmYQ/edit?usp=sharing"
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 no-underline group"
+      className="fixed bottom-5 right-4 md:bottom-6 md:right-6 z-50 flex items-center gap-2 no-underline"
       style={{
         background: "#e16d00",
         color: "#fff",
         borderRadius: "100px",
-        padding: "12px 20px",
+        padding: "11px 16px",
         boxShadow: "0 4px 24px rgba(225,109,0,0.35)",
         fontFamily: "var(--font-geist-sans)",
         fontSize: "14px",
         fontWeight: 600,
-        transition: "transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease",
-      }}
-      onMouseEnter={e => {
-        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-2px)"
-        ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 8px 32px rgba(225,109,0,0.5)"
-        ;(e.currentTarget as HTMLAnchorElement).style.background = "#c95f00"
-      }}
-      onMouseLeave={e => {
-        (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)"
-        ;(e.currentTarget as HTMLAnchorElement).style.boxShadow = "0 4px 24px rgba(225,109,0,0.35)"
-        ;(e.currentTarget as HTMLAnchorElement).style.background = "#e16d00"
       }}
     >
-      {/* Download icon */}
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
         <polyline points="7 10 12 15 17 10" />
         <line x1="12" y1="15" x2="12" y2="3" />
       </svg>
-      Resume
+      <span className="hidden md:inline">Resume</span>
     </a>
   )
 }
@@ -1057,14 +1079,13 @@ function ResumeButton() {
 export default function Home() {
   return (
     <main>
+      <CursorLabel />
       <Navbar />
       <Hero />
       <ProjectsSection />
       <AboutSection />
-      <ApproachSection />
-      <StatsSection />
+      <ServicesSection />
       <TechSection />
-      <CTASection />
       <Footer />
       <ResumeButton />
     </main>
