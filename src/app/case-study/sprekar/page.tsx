@@ -1,8 +1,9 @@
 "use client"
 
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 export default function SprekarCaseStudy() {
+  const router = useRouter()
   return (
     <div style={{
       background: "#0D0D0D", minHeight: "100vh",
@@ -17,16 +18,17 @@ export default function SprekarCaseStudy() {
         padding: "24px 48px",
         background: "linear-gradient(to bottom, rgba(13,13,13,1) 0%, transparent 100%)",
       }}>
-        <Link href="/" style={{
-          color: "rgba(255,255,255,0.5)", textDecoration: "none",
+        <button onClick={() => router.back()} style={{
+          color: "rgba(255,255,255,0.5)", background: "none", border: "none", cursor: "pointer",
           fontFamily: "var(--font-geist-sans)", fontSize: "14px",
           display: "inline-flex", alignItems: "center", gap: "8px",
+          padding: 0,
         }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
           </svg>
           Back
-        </Link>
+        </button>
       </div>
 
       {/* ── Mockup image ── */}
