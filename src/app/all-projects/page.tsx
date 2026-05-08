@@ -17,7 +17,7 @@ const allWorks = [
   {
     id: 2,
     tag: "Mobile App · Gaming",
-    title: "Chopbet",
+    title: "Chopwin",
     desc: "A sports betting and gaming platform with crash games, slots and live tournaments.",
     image: "/chopbet-mockup.png",
     href: "/case-study/chopbet",

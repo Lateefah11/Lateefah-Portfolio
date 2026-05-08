@@ -434,7 +434,7 @@ const works = [
   {
     id: 2,
     tag: "Mobile App · Gaming",
-    title: "Chopbet",
+    title: "Chopwin",
     image: "/chopbet-mockup.png",
     href: "/case-study/chopbet",
     year: "2025",
