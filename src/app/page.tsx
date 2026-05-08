@@ -416,7 +416,7 @@ function CursorLabel() {
         userSelect: "none",
       }}
     >
-      See Details →
+      See Case Study →
     </div>
   )
 }
@@ -425,7 +425,7 @@ function CursorLabel() {
 const works = [
   {
     id: 1,
-    tag: "Web App · AI / Translation",
+    tag: "Mobile App · AI / Translation",
     title: "Sprekar",
     image: "/sprekar-mockup.png",
     href: "/case-study/sprekar",

@@ -7,7 +7,7 @@ import Link from "next/link"
 const allWorks = [
   {
     id: 1,
-    tag: "Web App · AI / Translation",
+    tag: "Mobile App · AI / Translation",
     title: "Sprekar",
     desc: "An AI-powered platform for seamless real-time speech translation across languages.",
     image: "/sprekar-mockup.png",
