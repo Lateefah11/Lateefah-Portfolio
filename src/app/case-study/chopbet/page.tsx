@@ -42,7 +42,7 @@ export default function ChopwinCaseStudy() {
 
       <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap", justifyContent: "center" }}>
         <a
-          href="https://www.notion.so/Chopwin-35a1dfdc066a802e8cdbeb92c1c3a81a?source=copy_link"
+          href="https://relic-lock-b39.notion.site/Chopwin-35a1dfdc066a802e8cdbeb92c1c3a81a?source=copy_link"
           target="_blank"
           rel="noopener noreferrer"
           style={{

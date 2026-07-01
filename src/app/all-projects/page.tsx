@@ -10,7 +10,7 @@ const allWorks = [
     title: "Chopwin",
     desc: "A sports betting and casino platform with crash games, slots and live tournaments.",
     image: "/Chopwin.png",
-    href: "https://www.notion.so/Chopwin-35a1dfdc066a802e8cdbeb92c1c3a81a?source=copy_link",
+    href: "https://relic-lock-b39.notion.site/Chopwin-35a1dfdc066a802e8cdbeb92c1c3a81a?source=copy_link",
     year: "2025",
   },
   {
