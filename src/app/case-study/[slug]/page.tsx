@@ -1098,37 +1098,10 @@ export default function CaseStudyPage({ params }: { params: Promise<{ slug: stri
   return (
     <div style={{ background: "#0D0D0D", minHeight: "100vh", color: "#f9f9f9" }}>
 
-      {/* ── Sticky Nav ── */}
-      <div
-        className="sticky top-0 z-50 flex items-center justify-between px-5 md:px-10"
-        style={{
-          background: "rgba(32,32,32,0.92)",
-          backdropFilter: "blur(12px)",
-          borderBottom: "1px solid rgba(255,255,255,0.07)",
-          height: "56px",
-        }}
-      >
-        <Link
-          href="/#featured-works"
-          className="flex items-center gap-2 no-underline transition-opacity hover:opacity-70"
-          style={{ fontFamily: "var(--font-geist-sans)", fontSize: "14px", color: "rgba(255,255,255,0.6)" }}
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
-          </svg>
-          Back to work
-        </Link>
-        <span
-          style={{ fontFamily: "var(--font-anton)", fontSize: "15px", color: "rgba(255,255,255,0.5)", fontWeight: 400 }}
-        >
-          {cs.title}
-        </span>
-      </div>
-
       <div className="max-w-[860px] mx-auto px-5 md:px-10 pb-24">
 
         {/* ── Hero ── */}
-        <div style={{ paddingTop: "clamp(48px, 8vh, 80px)", paddingBottom: "clamp(32px, 5vh, 56px)" }}>
+        <div style={{ paddingTop: "clamp(56px, 9vh, 96px)", paddingBottom: "clamp(32px, 5vh, 56px)" }}>
           <span
             className="inline-block mb-5"
             style={{
@@ -1150,8 +1123,8 @@ export default function CaseStudyPage({ params }: { params: Promise<{ slug: stri
           <h1
             style={{
               fontFamily: "var(--font-anton)",
-              fontSize: "clamp(48px, 9vw, 96px)",
-              lineHeight: 1.0,
+              fontSize: "clamp(30px, 4vw, 52px)",
+              lineHeight: 1.1,
               color: "#f9f9f9",
               fontWeight: 400,
               margin: "0 0 20px",

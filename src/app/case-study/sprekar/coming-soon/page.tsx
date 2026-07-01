@@ -11,7 +11,7 @@ export default function ComingSoon() {
     }}>
       <h1 style={{
         fontFamily: "var(--font-anton)",
-        fontSize: "clamp(64px, 12vw, 160px)",
+        fontSize: "clamp(30px, 4vw, 52px)",
         lineHeight: 1,
         color: "#f9f9f9",
         letterSpacing: "-2px",

@@ -1,9 +1,9 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { ParticleSphere } from "@/components/ui/particle-sphere"
 import { AnimatedFooter } from "@/components/ui/animated-footer"
 import { BentoGrid, type BentoItem } from "@/components/ui/bento-grid"
+import { ProjectCard } from "@/components/ui/project-card"
 
 /* ─── Reveal Hook ────────────────────────────────────── */
 function useReveal() {
@@ -28,269 +28,97 @@ function useReveal() {
   return { ref, visible }
 }
 
-/* ─── Navbar ─────────────────────────────────────────── */
-const navLinks = [
-  { label: "Home",           href: "#" },
-  { label: "Featured works", href: "#featured-works" },
-  { label: "About",          href: "#about" },
-  { label: "Tool box",       href: "#technologies" },
-]
-
-function Navbar() {
-  const [scrolled, setScrolled]   = useState(false)
-  const [menuOpen, setMenuOpen]   = useState(false)
-  const [footerVisible, setFooterVisible] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60)
-    window.addEventListener("scroll", onScroll, { passive: true })
-    return () => window.removeEventListener("scroll", onScroll)
-  }, [])
-
-  useEffect(() => {
-    const sentinel = document.getElementById("footer-sentinel")
-    if (!sentinel) return
-    const observer = new IntersectionObserver(
-      ([entry]) => setFooterVisible(entry.isIntersecting),
-      { threshold: 0.05 }
-    )
-    observer.observe(sentinel)
-    return () => observer.disconnect()
-  }, [])
-
-  // Lock body scroll when drawer open
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : ""
-    return () => { document.body.style.overflow = "" }
-  }, [menuOpen])
-
-  return (
-    <>
-      {/* ── Transparent top bar (pre-scroll) ── */}
-      <div
-        className="fixed top-6 left-0 right-0 z-50 flex items-center justify-between px-5 md:px-8 pointer-events-none transition-all duration-500"
-        style={{
-          opacity: scrolled || footerVisible ? 0 : 1,
-          transform: scrolled ? "translateY(-12px)" : "translateY(0)",
-        }}
-      >
-        {/* Logo */}
-        <a href="#" className="pointer-events-auto no-underline">
-          <span
-            className="text-[26px] leading-[22px] text-[#f9f9f9]"
-            style={{ fontFamily: "var(--font-anton)" }}
-          >
-            TEE
-          </span>
-        </a>
-
-        {/* Centre nav links */}
-        <ul className="absolute left-1/2 -translate-x-1/2 hidden md:flex items-center gap-7 list-none pointer-events-auto">
-          {navLinks.map((link) => (
-            <li key={link.label}>
-              <a
-                href={link.href}
-                className="no-underline transition-colors duration-200"
-                style={{
-                  fontFamily: "var(--font-geist-sans)",
-                  fontSize: "14px",
-                  color: "rgba(255,255,255,0.55)",
-                }}
-                onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.95)")}
-                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.55)")}
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-
-        {/* Spacer to keep logo left-aligned */}
-        <div className="w-[52px]" />
-      </div>
-
-      {/* ── Hamburger FAB (post-scroll) ── */}
-      <button
-        onClick={() => setMenuOpen(true)}
-        aria-label="Open menu"
-        className="pointer-events-auto fixed top-6 right-6 z-50 flex items-center justify-center rounded-full bg-white shadow-lg transition-all duration-400 cursor-pointer border-0"
-        style={{
-          width: "52px",
-          height: "52px",
-          opacity: !footerVisible ? 1 : 0,
-          transform: !footerVisible ? "scale(1)" : "scale(0.8)",
-          pointerEvents: !footerVisible ? "auto" : "none",
-          transitionProperty: "opacity, transform",
-          transitionDuration: "350ms",
-          transitionTimingFunction: "cubic-bezier(0.25,0.46,0.45,0.94)",
-        }}
-      >
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
-          <rect x="0" y="0"  width="18" height="2" rx="1" fill="#111" />
-          <rect x="0" y="10" width="18" height="2" rx="1" fill="#111" />
-        </svg>
-      </button>
-
-      {/* ── Side drawer backdrop ── */}
-      <div
-        className="fixed inset-0 z-[60] transition-all duration-400"
-        style={{
-          background: "rgba(0,0,0,0.55)",
-          opacity: menuOpen ? 1 : 0,
-          pointerEvents: menuOpen ? "auto" : "none",
-          backdropFilter: menuOpen ? "blur(4px)" : "blur(0px)",
-          transitionProperty: "opacity, backdrop-filter",
-          transitionDuration: "380ms",
-        }}
-        onClick={() => setMenuOpen(false)}
-      />
-
-      {/* ── Side drawer panel ── */}
-      <div
-        className="fixed top-0 right-0 bottom-0 z-[70] flex flex-col"
-        style={{
-          width: "min(420px, 90vw)",
-          background: "#0A0A0A",
-          transform: menuOpen ? "translateX(0)" : "translateX(100%)",
-          transition: "transform 420ms cubic-bezier(0.25,0.46,0.45,0.94)",
-          padding: "clamp(28px,5vw,48px)",
-        }}
-      >
-        {/* Close button */}
-        <div className="flex justify-end mb-12">
-          <button
-            onClick={() => setMenuOpen(false)}
-            aria-label="Close menu"
-            className="flex items-center justify-center rounded-full bg-white cursor-pointer border-0 transition-opacity hover:opacity-80"
-            style={{ width: "52px", height: "52px" }}
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M1 1l12 12M13 1L1 13" stroke="#111" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
-          </button>
-        </div>
-
-        {/* Navigation label */}
-        <p
-          className="mb-6 tracking-[0.16em] uppercase"
-          style={{
-            fontFamily: "var(--font-geist-sans)",
-            fontSize: "11px",
-            color: "rgba(255,255,255,0.3)",
-          }}
-        >
-          Navigation
-        </p>
-        <div style={{ height: "1px", background: "rgba(255,255,255,0.08)", marginBottom: "32px" }} />
-
-        {/* Nav items */}
-        <nav className="flex flex-col gap-1 flex-1">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className="no-underline group flex items-center gap-3 transition-colors duration-200"
-              style={{
-                fontFamily: "var(--font-anton)",
-                fontSize: "clamp(32px, 6vw, 52px)",
-                lineHeight: 1.15,
-                color: "rgba(255,255,255,0.85)",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.color = "#ffffff")}
-              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.85)")}
-            >
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        {/* Socials */}
-        <div className="mt-auto pt-8" style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-          <p
-            className="mb-4 tracking-[0.16em] uppercase"
-            style={{
-              fontFamily: "var(--font-geist-sans)",
-              fontSize: "11px",
-              color: "rgba(255,255,255,0.3)",
-            }}
-          >
-            Contact me
-          </p>
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            {[
-              { label: "LinkedIn",  href: "https://www.linkedin.com/in/lateefah-abdulrahman-634571348" },
-              { label: "WhatsApp", href: "https://wa.link/2wa261" },
-              { label: "Email",    href: "mailto:lateefahabdulrahman111@gmail.com" },
-            ].map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="no-underline transition-colors duration-200"
-                style={{
-                  fontFamily: "var(--font-geist-sans)",
-                  fontSize: "14px",
-                  color: "rgba(255,255,255,0.45)",
-                }}
-                onMouseEnter={e => (e.currentTarget.style.color = "rgba(255,255,255,0.9)")}
-                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
-              >
-                {s.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
-
 /* ─── Hero ───────────────────────────────────────────── */
 function Hero() {
-  const outerRef = useRef<HTMLDivElement>(null)
+  const [aboutHover, setAboutHover] = useState(false)
 
   return (
-    <div ref={outerRef} style={{ height: "210vh", position: "relative" }}>
-      <section className="sticky top-0 h-screen flex flex-col items-center justify-center text-center overflow-hidden px-6 bg-[#0D0D0D]">
+    <section
+      id="home"
+      className="px-6 md:px-12"
+      style={{ background: "#0D0D0D", paddingTop: "clamp(48px, 7vh, 90px)", paddingBottom: "clamp(32px, 5vh, 56px)" }}
+    >
+      <div className="max-w-[820px]">
+        <span
+          className="inline-flex items-center gap-2 mb-6"
+          style={{
+            fontFamily: "var(--font-geist-sans)",
+            fontSize: "13px",
+            color: "rgba(255,255,255,0.6)",
+            border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: "100px",
+            padding: "6px 14px",
+          }}
+        >
+          <span className="w-[7px] h-[7px] rounded-full shrink-0" style={{ background: "#3ecf5f" }} />
+          Available for work
+        </span>
 
-        {/* Particle sphere background */}
-        <ParticleSphere
-          className="absolute inset-0 w-full h-full"
-          outerRef={outerRef}
-        />
+        <h1
+          style={{
+            fontFamily: "var(--font-anton)",
+            fontSize: "clamp(30px, 4vw, 52px)",
+            lineHeight: 1.1,
+            letterSpacing: "-0.5px",
+            color: "#f9f9f9",
+            fontWeight: 400,
+            margin: "0 0 18px",
+          }}
+        >
+          Hey, I&apos;m Lateefah.
+          <br />
+          I design products people trust.
+        </h1>
 
-        {/* Hero text — always visible, animation plays behind */}
-        <div className="relative z-10 max-w-2xl mx-auto">
-          <span className="inline-block text-[11px] font-medium tracking-[0.12em] uppercase text-white/50 mb-5">
-            Product Designer
-          </span>
-          <h1
-            className="text-[clamp(44px,13vw,140px)] leading-[1.0] tracking-[-1px] md:tracking-[-3px] text-white font-black"
-            style={{ fontFamily: "var(--font-anton)" }}
+        <p
+          style={{
+            fontFamily: "var(--font-geist-sans)",
+            fontSize: "clamp(14px, 1.3vw, 16px)",
+            lineHeight: 1.7,
+            color: "rgba(255,255,255,0.55)",
+            maxWidth: "560px",
+            margin: "0 0 28px",
+          }}
+        >
+          I&apos;m a product designer with 4+ years of experience across fintech, e-commerce, marketplaces, and AI — designing for B2C and B2B, across mobile and web.
+        </p>
+
+        <div className="flex flex-wrap items-center gap-4">
+          <a
+            href="mailto:lateefahabdulrahman111@gmail.com"
+            className="btn-shimmer no-underline inline-flex items-center gap-2"
+            style={{
+              background: "#e16d00",
+              color: "#fff",
+              fontFamily: "var(--font-geist-sans)",
+              fontSize: "14px",
+              fontWeight: 600,
+              padding: "13px 28px",
+              borderRadius: "10px",
+            }}
           >
-            Lateefah
-            <br />
-            Abdulrahman
-          </h1>
-        </div>
-
-        {/* Scroll cue */}
-        <div className="absolute bottom-9 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
-          <span
-            className="text-white/35 text-[10px] tracking-[0.18em] uppercase"
-            style={{ fontFamily: "var(--font-geist-sans)" }}
+            Get in touch
+          </a>
+          <a
+            href="#about"
+            className="no-underline inline-flex items-center gap-2 transition-colors duration-200"
+            style={{
+              color: "rgba(255,255,255,0.85)",
+              fontFamily: "var(--font-geist-sans)",
+              fontSize: "14px",
+              fontWeight: 600,
+              padding: "13px 28px",
+              borderRadius: "10px",
+              border: `1.5px solid ${aboutHover ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.18)"}`,
+            }}
+            onMouseEnter={() => setAboutHover(true)}
+            onMouseLeave={() => setAboutHover(false)}
           >
-            Scroll
-          </span>
-          <svg width="16" height="10" viewBox="0 0 16 10" fill="none" className="animate-bounce">
-            <path d="M1 1L8 8L15 1" stroke="rgba(255,255,255,0.35)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+            About me
+          </a>
         </div>
-
-      </section>
-    </div>
+      </div>
+    </section>
   )
 }
 
@@ -345,147 +173,69 @@ function SkillTag({ label, icon }: { label: string; icon: React.ReactNode }) {
   )
 }
 
-/* ─── Cursor Follow Label ────────────────────────────── */
-function CursorLabel() {
-  const labelRef = useRef<HTMLDivElement>(null)
-  const pos = useRef({ x: -300, y: -300 })
-  const target = useRef({ x: -300, y: -300 })
-  const visible = useRef(false)
-  const rafId = useRef<number | null>(null)
-
-  useEffect(() => {
-    const label = labelRef.current
-    if (!label) return
-
-    const onMove = (e: MouseEvent) => {
-      target.current = { x: e.clientX, y: e.clientY }
-    }
-
-    const setVisible = (next: boolean) => {
-      if (next === visible.current) return
-      visible.current = next
-      label.style.opacity = next ? "1" : "0"
-      label.style.transform = next ? "scale(1)" : "scale(0.88)"
-    }
-
-    const tick = () => {
-      // Re-check hit every frame so scroll moves are caught without mouse movement
-      const el = document.elementFromPoint(target.current.x, target.current.y)
-      const over = !!(el as Element | null)?.closest?.("[data-cursor-label]")
-      setVisible(over)
-
-      // Lerp — lag behind cursor for premium feel
-      pos.current.x += (target.current.x - pos.current.x) * 0.1
-      pos.current.y += (target.current.y - pos.current.y) * 0.1
-      label.style.left = `${pos.current.x + 18}px`
-      label.style.top = `${pos.current.y + 16}px`
-      rafId.current = requestAnimationFrame(tick)
-    }
-
-    document.addEventListener("mousemove", onMove)
-    rafId.current = requestAnimationFrame(tick)
-
-    return () => {
-      document.removeEventListener("mousemove", onMove)
-      if (rafId.current !== null) cancelAnimationFrame(rafId.current)
-    }
-  }, [])
-
-  return (
-    <div
-      ref={labelRef}
-      style={{
-        position: "fixed",
-        left: 0,
-        top: 0,
-        pointerEvents: "none",
-        zIndex: 9999,
-        opacity: 0,
-        transform: "scale(0.88)",
-        transition: "opacity 0.22s ease, transform 0.22s ease",
-        background: "#fff",
-        color: "#111",
-        padding: "9px 20px",
-        borderRadius: "999px",
-        fontFamily: "var(--font-geist-sans)",
-        fontSize: "13px",
-        fontWeight: 600,
-        letterSpacing: "0.01em",
-        boxShadow: "0 4px 20px rgba(0,0,0,0.14), 0 1px 4px rgba(0,0,0,0.08)",
-        whiteSpace: "nowrap",
-        userSelect: "none",
-      }}
-    >
-      See Case Study →
-    </div>
-  )
-}
-
 /* ─── Projects Section ───────────────────────────────── */
 const works = [
   {
     id: 1,
-    tag: "Mobile App · AI / Translation",
-    title: "Sprekar",
-    image: "/sprekar-mockup.png",
-    href: "/case-study/sprekar",
+    tag: "Web App · Casino / Gaming",
+    title: "Chopwin",
+    image: "/Chopwin.png",
+    href: "https://www.notion.so/Chopwin-35a1dfdc066a802e8cdbeb92c1c3a81a?source=copy_link",
     year: "2025",
   },
   {
     id: 2,
-    tag: "Mobile App · Gaming",
-    title: "Chopwin",
-    image: "/chopbet-mockup.png",
-    href: "/case-study/chopbet",
-    year: "2025",
-    isMockup: true,
+    tag: "Mobile App · Fintech",
+    title: "AzuCapital",
+    image: "/AzuCapital.png",
+    href: "/case-study/azucapital",
+    year: "2024",
   },
   {
     id: 3,
-    tag: "Web App · Travel & Visa",
-    title: "Tbils",
-    image: "/tbils-mockup.png",
-    href: "/case-study/tbils",
-    year: "2024",
+    tag: "Mobile App · AI Video Analyzer",
+    title: "Afia",
+    image: "/Afia.png",
+    href: "/case-study/afia",
+    year: "2025",
   },
   {
     id: 4,
-    tag: "Web App · Real Estate",
-    title: "Bricklage",
-    image: "/Buyers dashboard/Bricklage mockup.png",
-    href: "/case-study/clubarant",
-    year: "2024",
+    tag: "Mobile App · AI Translation",
+    title: "Sprekar",
+    image: "/Sprekar.png",
+    href: "https://www.notion.so/Sprekar-3591dfdc066a80328ef0c9a19c7846f9?source=copy_link",
+    year: "2025",
   },
   {
     id: 5,
-    tag: "Mobile App · Fintech",
-    title: "AzuCapital",
-    image: "/Azucapital mockup.png",
-    href: "/case-study/azucapital",
-    year: "2024",
+    tag: "Mobile App · Social App",
+    title: "LifeFriends",
+    image: "/LifeFriends.png",
+    href: "/case-study/lifefriends",
+    year: "2025",
+  },
+  {
+    id: 6,
+    tag: "Mobile App · Period Tracker",
+    title: "Bloomia",
+    image: "/Bloomia.png",
+    href: "/case-study/bloomia",
+    year: "2025",
+  },
+  {
+    id: 7,
+    tag: "Web App · Collaboration",
+    title: "MotionFarm",
+    image: "/MotionFarm.png",
+    href: "/case-study/motionfarm",
+    year: "2025",
   },
 ]
 
 /* ─── Projects Section — Editorial List ─────────────── */
 function ProjectsSection() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null)
-  const [previewTop, setPreviewTop] = useState(0)
   const { ref, visible } = useReveal()
-  const listRef = useRef<HTMLDivElement>(null)
-  const rowRefs = useRef<(HTMLAnchorElement | null)[]>([])
-
-  const PREVIEW_H = 240
-
-  const handleRowEnter = (i: number) => {
-    setActiveIndex(i)
-    const row = rowRefs.current[i]
-    const list = listRef.current
-    if (!row || !list) return
-    const rowRect = row.getBoundingClientRect()
-    const listRect = list.getBoundingClientRect()
-    const rowCenterY = rowRect.top - listRect.top + rowRect.height / 2
-    setPreviewTop(rowCenterY - PREVIEW_H / 2)
-  }
 
   return (
     <section
@@ -494,142 +244,48 @@ function ProjectsSection() {
       className={`relative transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       style={{
         background: "#0D0D0D",
-        padding: "clamp(40px, 8vh, 100px) clamp(20px, 5vw, 200px)",
+        padding: "clamp(40px, 8vh, 100px) clamp(20px, 5vw, 100px)",
       }}
     >
       <div className="max-w-[1200px] mx-auto">
-        {/* Desktop: list with floating preview */}
-        <div ref={listRef} className="hidden md:block relative">
-          {/* Floating image preview — follows hovered row vertically */}
-          <div
-            className="pointer-events-none absolute left-1/2 z-20 -translate-x-1/2"
+        <div className="flex items-center justify-between flex-wrap gap-4" style={{ marginBottom: "56px" }}>
+          <h2
+            className="section-heading"
             style={{
-              width: "340px",
-              height: `${PREVIEW_H}px`,
-              top: previewTop,
-              transition: "top 350ms cubic-bezier(0.25,0.46,0.45,0.94)",
+              fontFamily: "var(--font-anton)",
+              fontSize: "32px",
+              lineHeight: 1.05,
+              color: "#f9f9f9",
+              fontWeight: 400,
+              margin: 0,
             }}
           >
-            {works.map((work, i) => (
-              <div
-                key={work.id}
-                className="absolute inset-0 rounded-[12px] overflow-hidden"
-                style={{
-                  opacity: activeIndex === i ? 1 : 0,
-                  transform: activeIndex === i ? "scale(1) translateY(0px)" : "scale(0.97) translateY(10px)",
-                  transition: "opacity 350ms cubic-bezier(0.25,0.46,0.45,0.94), transform 350ms cubic-bezier(0.25,0.46,0.45,0.94)",
-                }}
-              >
-                <img
-                  src={work.image}
-                  alt={work.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Project rows */}
-          {works.map((work, i) => (
-            <a
-              key={work.id}
-              ref={el => { rowRefs.current[i] = el }}
-              href={work.href}
-              data-cursor-label="true"
-              className="group flex items-center justify-between no-underline"
-              style={{
-                padding: "clamp(22px, 3.5vw, 36px) 0",
-                borderBottom: "1px solid rgba(255,255,255,0.1)",
-                transition: "opacity 300ms ease",
-                opacity: activeIndex === null ? 1 : activeIndex === i ? 1 : 0.28,
-              }}
-              onMouseEnter={() => handleRowEnter(i)}
-              onMouseLeave={() => setActiveIndex(null)}
-            >
-              {/* Left: title */}
-              <span
-                style={{
-                  fontFamily: "var(--font-anton)",
-                  fontSize: "clamp(36px, 5.5vw, 76px)",
-                  lineHeight: 1,
-                  color: activeIndex === i ? "#f9f9f9" : "rgba(255,255,255,0.75)",
-                  letterSpacing: "-0.5px",
-                  transition: "color 300ms ease",
-                }}
-              >
-                {work.title}
-              </span>
-
-              {/* Right: meta */}
-              <div className="flex flex-col items-end gap-1 shrink-0 ml-8">
-                <span
-                  style={{
-                    fontFamily: "var(--font-geist-sans)",
-                    fontSize: "13px",
-                    color: activeIndex === i ? "rgba(255,255,255,0.7)" : "rgba(255,255,255,0.3)",
-                    letterSpacing: "0.04em",
-                    transition: "color 300ms ease",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {work.tag}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-geist-sans)",
-                    fontSize: "11px",
-                    color: "rgba(255,255,255,0.2)",
-                    letterSpacing: "0.08em",
-                    transition: "color 300ms ease",
-                  }}
-                >
-                  {work.year}
-                </span>
-              </div>
-            </a>
-          ))}
-
+            Selected work
+          </h2>
+          <a
+            href="/all-projects"
+            className="no-underline transition-colors duration-200"
+            style={{
+              fontFamily: "var(--font-geist-sans)",
+              fontSize: "14px",
+              fontWeight: 600,
+              color: "rgba(255,255,255,0.7)",
+              border: "1.5px solid rgba(255,255,255,0.18)",
+              borderRadius: "10px",
+              padding: "9px 20px",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#f9f9f9")}
+            onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
+          >
+            All projects
+          </a>
         </div>
 
-        {/* Mobile: image + title stacked, no wrapper card */}
-        <div className="md:hidden flex flex-col gap-8">
-          {works.map((work) => (
-            <a key={work.id} href={work.href} className="block no-underline">
-              <div className="relative w-full overflow-hidden" style={{ aspectRatio: "16/9", borderRadius: "12px" }}>
-                <img
-                  src={work.image}
-                  alt={work.title}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex items-center justify-between mt-3 px-1">
-                <span
-                  style={{
-                    fontFamily: "var(--font-anton)",
-                    fontSize: "24px",
-                    color: "#f9f9f9",
-                    lineHeight: 1,
-                  }}
-                >
-                  {work.title}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-geist-sans)",
-                    fontSize: "11px",
-                    color: "rgba(255,255,255,0.35)",
-                    letterSpacing: "0.06em",
-                    textAlign: "right",
-                    maxWidth: "120px",
-                  }}
-                >
-                  {work.tag}
-                </span>
-              </div>
-            </a>
+        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: "8px" }}>
+          {works.slice(0, 3).map((work) => (
+            <ProjectCard key={work.id} title={work.title} tag={work.tag} image={work.image} href={work.href} />
           ))}
         </div>
-
       </div>
     </section>
   )
@@ -639,6 +295,27 @@ function ProjectsSection() {
 const skills = [
   "Product Design", "UX Design", "Figma", "Framer",
   "Photoshop", "Spline", "User Research", "Design Systems", "Claude",
+]
+
+const experience = [
+  {
+    title: "Product Designer",
+    company: "Choplife",
+    duration: "2024 – Till date",
+    summary: "Designing end-to-end web and mobile experiences that helped grow the user base 300% (10K→40K), while partnering with product and engineering to scope and ship iterative solutions.",
+  },
+  {
+    title: "Lead Product Designer",
+    company: "Rogue Dev Tech",
+    duration: "2023 – 2024",
+    summary: "Led end-to-end product design across mobile and web, building reusable design systems and shipping flows and prototypes that improved onboarding and engagement.",
+  },
+  {
+    title: "UI/UX Designer",
+    company: "Numad Technology",
+    duration: "2022 – 2023",
+    summary: "Supported senior designers on wireframes and prototypes for early-stage products, applying UX and accessibility best practices across cross-functional teams.",
+  },
 ]
 
 function AboutSection() {
@@ -666,13 +343,14 @@ function AboutSection() {
             borderRadius: "12px",
             background: "#181818",
             border: "1px solid rgba(255,255,255,0.08)",
-            minHeight: "420px",
+            minHeight: "320px",
           }}
         >
           <img
             src="/lateefah-profile.jpg"
             alt="Lateefah Abdulrahman"
-            className="absolute inset-0 w-full h-full object-cover object-top"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: "50% 18%" }}
           />
         </div>
 
@@ -681,9 +359,10 @@ function AboutSection() {
 
           {/* Heading */}
           <h2
+            className="section-heading"
             style={{
               fontFamily: "var(--font-anton)",
-              fontSize: "clamp(36px, 5vw, 64px)",
+              fontSize: "32px",
               lineHeight: 1.05,
               color: "#f9f9f9",
               margin: 0,
@@ -708,61 +387,66 @@ function AboutSection() {
             <br /><br />
             Each role fuels a different side of me: I create with purpose, connect with people, compete with heart, and give back with intention.
           </p>
-
-          {/* Experience */}
-          <div
-            className="flex flex-col gap-4 pt-5"
-            style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
-          >
-            {/* Current role */}
-            <div className="flex items-start gap-4">
-              <div className="flex flex-col items-center gap-1 pt-1 shrink-0">
-                <span className="w-[8px] h-[8px] rounded-full" style={{ background: "#e16d00" }} />
-                <span className="w-[1px] flex-1" style={{ background: "rgba(255,255,255,0.1)", minHeight: "20px" }} />
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "15px", fontWeight: 600, color: "#f9f9f9" }}>
-                  Product Designer
-                </span>
-                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "13px", color: "rgba(255,255,255,0.45)" }}>
-                  Choplife · Currently
-                </span>
-              </div>
-            </div>
-
-            {/* Stat */}
-            <div className="flex items-start gap-4">
-              <div className="flex flex-col items-center shrink-0 pt-1">
-                <span className="w-[8px] h-[8px] rounded-full" style={{ background: "rgba(255,255,255,0.2)" }} />
-              </div>
-              <div className="flex flex-col gap-0.5">
-                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "15px", fontWeight: 600, color: "#f9f9f9" }}>
-                  4+ Years Experience
-                </span>
-                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "13px", color: "rgba(255,255,255,0.45)" }}>
-                  Creative & product design industry
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA */}
-          <a
-            href="mailto:lateefahabdulrahman111@gmail.com"
-            className="btn-shimmer self-start inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80"
-            style={{
-              background: "#e16d00",
-              color: "#fff",
-              fontFamily: "var(--font-geist-sans)",
-              fontSize: "14px",
-              fontWeight: 600,
-              padding: "13px 30px",
-              borderRadius: "12px",
-            }}
-          >
-            Contact me
-          </a>
         </div>
+      </div>
+
+      {/* ── Experience + CTA — full width, below the photo/bio row ── */}
+      <div className="max-w-[1200px] mx-auto" style={{ marginTop: "clamp(40px, 6vh, 64px)" }}>
+        <h3
+          className="section-heading"
+          style={{
+            fontFamily: "var(--font-anton)",
+            fontSize: "32px",
+            color: "#f9f9f9",
+            fontWeight: 400,
+            margin: "0 0 8px",
+          }}
+        >
+          Work experience
+        </h3>
+
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}>
+          {experience.map((role, i) => (
+            <div
+              key={role.company}
+              className="grid grid-cols-1 md:grid-cols-[minmax(0,260px)_1fr] gap-x-10 gap-y-2"
+              style={{
+                padding: "24px 0",
+                borderBottom: i < experience.length - 1 ? "1px dashed rgba(255,255,255,0.18)" : "none",
+              }}
+            >
+              <div className="flex flex-col gap-1">
+                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "13px", color: "rgba(255,255,255,0.45)" }}>
+                  {role.company} · {role.duration}
+                </span>
+                <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "17px", fontWeight: 500, color: "#f9f9f9" }}>
+                  {role.title}
+                </span>
+              </div>
+              <p style={{ fontFamily: "var(--font-geist-sans)", fontSize: "14px", lineHeight: 1.7, color: "rgba(255,255,255,0.5)", margin: 0, alignSelf: "center" }}>
+                {role.summary}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <a
+          href="mailto:lateefahabdulrahman111@gmail.com"
+          className="btn-shimmer inline-flex items-center gap-2 no-underline transition-opacity hover:opacity-80"
+          style={{
+            background: "#e16d00",
+            color: "#fff",
+            fontFamily: "var(--font-geist-sans)",
+            fontSize: "14px",
+            fontWeight: 600,
+            padding: "13px 30px",
+            borderRadius: "12px",
+            marginTop: "28px",
+          }}
+        >
+          Contact me
+        </a>
       </div>
 
     </section>
@@ -833,10 +517,10 @@ function ServicesSection() {
     >
       <div className="max-w-[1200px] mx-auto">
         <h2
-          className="text-center"
+          className="section-heading"
           style={{
             fontFamily: "var(--font-anton)",
-            fontSize: "clamp(36px, 5vw, 60px)",
+            fontSize: "32px",
             lineHeight: 1.05,
             color: "#f9f9f9",
             fontWeight: 400,
@@ -911,10 +595,10 @@ function TechSection() {
       <div className="max-w-[1100px] mx-auto">
         {/* Heading */}
         <h2
-          className="text-center"
+          className="section-heading"
           style={{
             fontFamily: "var(--font-anton)",
-            fontSize: "clamp(36px, 5vw, 60px)",
+            fontSize: "32px",
             lineHeight: 1.05,
             color: "#f9f9f9",
             fontWeight: 400,
@@ -1036,7 +720,6 @@ function Footer() {
 
   return (
     <AnimatedFooter
-      brandName="LATEEFAH"
       tagline="Designed with purpose. Built with care."
       socialLinks={socialLinks}
       navColumns={navColumns}
@@ -1047,47 +730,16 @@ function Footer() {
 }
 
 /* ─── Floating Resume Button ─────────────────────────── */
-function ResumeButton() {
-  return (
-    <a
-      href="https://docs.google.com/document/d/1Ou4iep9L-jh0QKcEXkNbW6BL90sfhX7DJf9YCj8RmYQ/edit?usp=sharing"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="fixed bottom-5 right-4 md:bottom-6 md:right-6 z-50 flex items-center gap-2 no-underline"
-      style={{
-        background: "#e16d00",
-        color: "#fff",
-        borderRadius: "100px",
-        padding: "11px 16px",
-        boxShadow: "0 4px 24px rgba(225,109,0,0.35)",
-        fontFamily: "var(--font-geist-sans)",
-        fontSize: "14px",
-        fontWeight: 600,
-      }}
-    >
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-        <polyline points="7 10 12 15 17 10" />
-        <line x1="12" y1="15" x2="12" y2="3" />
-      </svg>
-      <span className="hidden md:inline">Resume</span>
-    </a>
-  )
-}
-
 /* ─── Page ───────────────────────────────────────────── */
 export default function Home() {
   return (
     <main>
-      <CursorLabel />
-      <Navbar />
       <Hero />
       <ProjectsSection />
       <AboutSection />
       <ServicesSection />
       <TechSection />
       <Footer />
-      <ResumeButton />
     </main>
   )
 }

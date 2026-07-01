@@ -6,41 +6,21 @@ export default function TbilsCaseStudy() {
   return (
     <div style={{ background: "#0D0D0D", minHeight: "100vh", overflowX: "hidden", color: "#f9f9f9" }}>
 
-      {/* ── Back nav ── */}
-      <div className="cs-back-nav" style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-        padding: "24px 48px", display: "flex", alignItems: "center",
-        background: "linear-gradient(to bottom, rgba(13,13,13,0.9) 0%, transparent 100%)",
-        pointerEvents: "none",
-      }}>
-        <Link href="/" style={{
-          color: "rgba(255,255,255,0.5)", textDecoration: "none",
-          fontFamily: "var(--font-geist-sans)", fontSize: "14px",
-          display: "flex", alignItems: "center", gap: "8px",
-          pointerEvents: "all",
-        }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
-          </svg>
-          Back
-        </Link>
-      </div>
-
       {/* ══════════════════════════════════════════
           SECTION 1: HERO
       ══════════════════════════════════════════ */}
       <section className="cs-hero" style={{ padding: "43px 135px 0", background: "#0D0D0D" }}>
         <p style={{
-          fontFamily: "'Iowan Old Style', 'Georgia', serif",
-          fontSize: "20px", lineHeight: "25px",
-          color: "#bfbfbf", fontStyle: "italic",
+          fontFamily: "var(--font-geist-sans)",
+          fontSize: "16px", lineHeight: "25px",
+          color: "#bfbfbf",
         }}>
           Travel booking startup
         </p>
         <h1 style={{
           fontFamily: "var(--font-anton)",
-          fontSize: "147px", lineHeight: "167px",
-          color: "#f9f9f9", letterSpacing: "-1px",
+          fontSize: "clamp(30px, 4vw, 52px)", lineHeight: 1.1,
+          color: "#f9f9f9", letterSpacing: "-0.5px",
         }}>
           Tbils
         </h1>
@@ -72,7 +52,7 @@ export default function TbilsCaseStudy() {
             { label: "Focus",        value: "UX, Information Architecture, User Flows" },
           ].map((item) => (
             <div key={item.label}>
-              <p style={{ fontFamily: "'Iowan Old Style', Georgia, serif", fontSize: "20px", lineHeight: "25px", color: "#a4a4a4", fontStyle: "italic" }}>{item.label}</p>
+              <p style={{ fontFamily: "var(--font-geist-sans)", fontSize: "16px", lineHeight: "25px", color: "#a4a4a4" }}>{item.label}</p>
               <p style={{ fontFamily: "var(--font-anton)", fontSize: "24px", lineHeight: "34px", color: "#f9f9f9" }}>{item.value}</p>
             </div>
           ))}
@@ -139,9 +119,9 @@ export default function TbilsCaseStudy() {
       ══════════════════════════════════════════ */}
       <section className="cs-other" style={{ background: "#0D0D0D", padding: "100px 135px 80px" }}>
         <p style={{
-          fontFamily: "'Iowan Old Style', Georgia, serif",
-          fontSize: "20px", lineHeight: "25px",
-          color: "#a4a4a4", fontStyle: "italic", marginBottom: "12px",
+          fontFamily: "var(--font-geist-sans)",
+          fontSize: "16px", lineHeight: "25px",
+          color: "#a4a4a4", marginBottom: "12px",
         }}>
           Explore more work
         </p>
@@ -200,7 +180,7 @@ function OtherProjectCard({ title, tag, image, href }: {
           display: "flex", alignItems: "center", justifyContent: "center",
           opacity: 0, transition: "opacity 0.4s ease",
         }}>
-          <span style={{ fontFamily: "var(--font-anton)", fontSize: "clamp(18px, 2.5vw, 32px)", color: "white" }}>View Project</span>
+          <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "28px", color: "white" }}>View Project</span>
         </div>
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 4px" }}>

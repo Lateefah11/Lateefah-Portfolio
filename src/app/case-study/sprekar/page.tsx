@@ -1,7 +1,5 @@
 "use client"
 
-import Link from "next/link"
-
 export default function SprekarCaseStudy() {
   return (
     <div style={{
@@ -10,24 +8,6 @@ export default function SprekarCaseStudy() {
       alignItems: "center", justifyContent: "center",
       padding: "40px 20px", position: "relative",
     }}>
-
-      {/* ── Back nav ── */}
-      <div className="cs-back-nav" style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-        padding: "24px 48px",
-        background: "linear-gradient(to bottom, rgba(13,13,13,1) 0%, transparent 100%)",
-      }}>
-        <Link href="/#featured-works" style={{
-          color: "rgba(255,255,255,0.5)", textDecoration: "none",
-          fontFamily: "var(--font-geist-sans)", fontSize: "14px",
-          display: "inline-flex", alignItems: "center", gap: "8px",
-        }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" />
-          </svg>
-          Back
-        </Link>
-      </div>
 
       {/* ── Mockup image ── */}
       <img
@@ -44,7 +24,7 @@ export default function SprekarCaseStudy() {
       {/* ── Title + CTA ── */}
       <h1 style={{
         fontFamily: "var(--font-anton)",
-        fontSize: "clamp(56px, 10vw, 100px)",
+        fontSize: "clamp(30px, 4vw, 52px)",
         lineHeight: 1, color: "#f9f9f9",
         letterSpacing: "-2px", textAlign: "center",
         marginBottom: "20px",

@@ -14,7 +14,6 @@ interface SocialLink {
 }
 
 interface AnimatedFooterProps {
-  brandName?: string;
   copyright?: string;
   tagline?: string;
   socialLinks?: SocialLink[];
@@ -25,7 +24,6 @@ interface AnimatedFooterProps {
 }
 
 export const AnimatedFooter = ({
-  brandName = "LATEEFAH",
   copyright,
   tagline,
   socialLinks = [],
@@ -166,21 +164,6 @@ export const AnimatedFooter = ({
               ))}
             </div>
           )}
-        </div>
-
-        {/* ── Giant brand name — full width, centered ── */}
-        <div
-          className="w-full overflow-hidden select-none pointer-events-none text-center"
-          style={{
-            fontFamily: "var(--font-anton)",
-            fontSize: "27vw",
-            color: "#fff",
-            opacity: 1,
-            lineHeight: 0.83,
-            whiteSpace: "nowrap",
-          }}
-        >
-          {brandName}
         </div>
       </footer>
     </section>
