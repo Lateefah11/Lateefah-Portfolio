@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, Briefcase, User, Wrench } from "lucide-react"
+import { Home, Briefcase, User, Layers } from "lucide-react"
 
 export const SIDEBAR_WIDTH = 264
 
@@ -11,7 +11,7 @@ const navLinks = [
   { label: "Home", href: "/", Icon: Home, sectionId: "home" },
   { label: "Works", href: "/all-projects", Icon: Briefcase, sectionId: null },
   { label: "About", href: "/#about", Icon: User, sectionId: "about" },
-  { label: "Tools", href: "/#technologies", Icon: Wrench, sectionId: "technologies" },
+  { label: "Services", href: "/#services", Icon: Layers, sectionId: "services" },
 ]
 
 function LinkedInIcon() {

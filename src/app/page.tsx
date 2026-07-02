@@ -508,6 +508,7 @@ function ServicesSection() {
 
   return (
     <section
+      id="services"
       ref={ref as React.RefObject<HTMLElement>}
       className={`relative transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       style={{
