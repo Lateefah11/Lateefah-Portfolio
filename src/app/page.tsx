@@ -196,7 +196,7 @@ const works = [
     tag: "Mobile App · AI Video Analyzer",
     title: "Afia",
     image: "/Afia.png",
-    href: "/case-study/afia",
+    href: "https://app.notion.com/p/Afia-3901dfdc066a8059a216dc8203f9484e?source=copy_link",
     year: "2025",
   },
   {

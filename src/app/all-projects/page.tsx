@@ -28,7 +28,7 @@ const allWorks = [
     title: "Afia",
     desc: "An AI-powered mobile app that analyzes video content to surface insights in real time.",
     image: "/Afia.png",
-    href: "/case-study/afia",
+    href: "https://app.notion.com/p/Afia-3901dfdc066a8059a216dc8203f9484e?source=copy_link",
     year: "2025",
   },
   {
