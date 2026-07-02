@@ -46,7 +46,7 @@ const allWorks = [
     title: "LifeFriends",
     desc: "A social app for meeting and connecting with new people nearby.",
     image: "/LifeFriends.png",
-    href: "/case-study/lifefriends",
+    href: "https://www.lifefriends.co/",
     year: "2025",
   },
   {

@@ -212,7 +212,7 @@ const works = [
     tag: "Mobile App · Social App",
     title: "LifeFriends",
     image: "/LifeFriends.png",
-    href: "/case-study/lifefriends",
+    href: "https://www.lifefriends.co/",
     year: "2025",
   },
   {
