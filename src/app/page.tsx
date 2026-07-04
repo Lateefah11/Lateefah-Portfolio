@@ -30,7 +30,6 @@ function useReveal() {
 
 /* ─── Hero ───────────────────────────────────────────── */
 function Hero() {
-  const [aboutHover, setAboutHover] = useState(false)
 
   return (
     <section
@@ -98,23 +97,6 @@ function Hero() {
             }}
           >
             Get in touch
-          </a>
-          <a
-            href="#about"
-            className="no-underline inline-flex items-center gap-2 transition-colors duration-200"
-            style={{
-              color: "rgba(255,255,255,0.85)",
-              fontFamily: "var(--font-geist-sans)",
-              fontSize: "14px",
-              fontWeight: 600,
-              padding: "13px 28px",
-              borderRadius: "10px",
-              border: `1.5px solid ${aboutHover ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.18)"}`,
-            }}
-            onMouseEnter={() => setAboutHover(true)}
-            onMouseLeave={() => setAboutHover(false)}
-          >
-            About me
           </a>
         </div>
       </div>
