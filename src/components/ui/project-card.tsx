@@ -46,13 +46,13 @@ export function ProjectCard({ title, tag, image, href }: ProjectCardProps) {
 
       {/* Name label bar — overlaid on the image */}
       <div
-        className="absolute left-3 right-3 bottom-3 flex items-center justify-between rounded-[8px]"
+        className="absolute left-3 right-3 bottom-3 flex flex-col items-start gap-0.5 rounded-[8px]"
         style={{ background: "#0A0A0A", padding: "8px", border: "0.5px solid rgba(255,255,255,0.5)" }}
       >
-        <span style={{ fontFamily: "var(--font-anton)", fontSize: "14px", color: "#f9f9f9" }}>
+        <span style={{ fontFamily: "var(--font-anton)", fontSize: "14px", color: "#f9f9f9", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "100%" }}>
           {title}
         </span>
-        <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "11px", color: "rgba(255,255,255,0.45)", letterSpacing: "0.04em", whiteSpace: "nowrap" }}>
+        <span style={{ fontFamily: "var(--font-geist-sans)", fontSize: "11px", color: "rgba(255,255,255,0.45)", letterSpacing: "0.04em", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "100%" }}>
           {tag}
         </span>
       </div>

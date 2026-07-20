@@ -170,7 +170,7 @@ const works = [
     tag: "Mobile App · Fintech",
     title: "AzuCapital",
     image: "/AzuCapital.png",
-    href: "/case-study/azucapital",
+    href: "https://app.notion.com/p/AzuCapital-35a1dfdc066a80ac8a3bdafa11b58a02?source=copy_link",
     year: "2024",
   },
   {
@@ -263,7 +263,7 @@ function ProjectsSection() {
           </a>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: "8px" }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" style={{ gap: "8px" }}>
           {works.slice(0, 3).map((work) => (
             <ProjectCard key={work.id} title={work.title} tag={work.tag} image={work.image} href={work.href} />
           ))}

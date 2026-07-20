@@ -19,7 +19,7 @@ const allWorks = [
     title: "AzuCapital",
     desc: "A fintech app empowering Africans with access to loans, savings, payments, and global banking tools — all from one app.",
     image: "/AzuCapital.png",
-    href: "/case-study/azucapital",
+    href: "https://app.notion.com/p/AzuCapital-35a1dfdc066a80ac8a3bdafa11b58a02?source=copy_link",
     year: "2024",
   },
   {
