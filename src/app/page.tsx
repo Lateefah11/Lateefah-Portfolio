@@ -284,7 +284,7 @@ const experience = [
     title: "Product Designer",
     company: "Choplife",
     duration: "2024 – Till date",
-    summary: "Designing end-to-end web and mobile experiences that helped grow the user base 300% (10K→40K), while partnering with product and engineering to scope and ship iterative solutions.",
+    summary: "Designing end-to-end web and mobile experiences that helped grow the user base 1060% (5K→58K), while partnering with product and engineering to scope and ship iterative solutions.",
   },
   {
     title: "Lead Product Designer",
