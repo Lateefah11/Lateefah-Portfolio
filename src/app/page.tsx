@@ -79,7 +79,7 @@ function Hero() {
             margin: "0 0 28px",
           }}
         >
-          I&apos;m a product designer with 7+ years of experience across fintech, e-commerce, marketplaces, and AI; designing for B2C and B2B, across mobile and web.
+          I&apos;m a product designer with 4+ years of experience across fintech, e-commerce, marketplaces, and AI; designing for B2C and B2B, across mobile and web.
         </p>
 
         <div className="flex flex-wrap items-center gap-4">
