@@ -289,13 +289,13 @@ const experience = [
   {
     title: "Lead Product Designer",
     company: "Rogue Dev Tech",
-    duration: "2022 – 2024",
+    duration: "2023 – 2024",
     summary: "Led end-to-end product design across mobile and web, building reusable design systems and shipping flows and prototypes that improved onboarding and engagement.",
   },
   {
     title: "UI/UX Designer",
     company: "LifeFriends",
-    duration: "2019 – 2022",
+    duration: "2022 – 2023",
     summary: "Supported senior designers on wireframes and prototypes for early-stage products, applying UX and accessibility best practices across cross-functional teams.",
   },
 ]
